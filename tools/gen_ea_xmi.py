@@ -104,7 +104,16 @@ def parse(path):
         p.name = nm[1:] if nm.startswith(':') else nm   # quita ':' inicial
         cls = prop_type.get(lf.get('represents'))
         p.is_actor = cls in actor_ids
-        p.stereo = stereo.get(p.id)
+        # Estereotipos de robustez: SOLO la GUI (boundary) y el Controller (control)
+        # llevan icono. DAO, DTO, Loader, Checker, Generator -> objeto rectangular.
+        src_st = stereo.get(p.id)
+        if src_st == 'boundary':
+            p.stereo = 'boundary'
+        elif p.name.endswith('Controller'):
+            p.stereo = 'control'
+        else:
+            p.stereo = None
+        p.create_seq = None          # seqno del mensaje «create» que lo crea (lifecycle New)
         all_parts.append(p)
 
     bd_ids = {p.id for p in all_parts if p.name.strip().upper() == 'BD'}
@@ -184,6 +193,13 @@ def parse(path):
 
     # descarta fragmentos que quedaron sin mensajes (p.ej. solo envolvian BD)
     frags = [f for f in frags if f['seqs']]
+
+    # objetos creados: su lifeline arranca en el punto del mensaje «create» (lifecycle New)
+    for mid in order:
+        if msgs[mid]['sort'] == 'createMessage':
+            rcv = msgs[mid]['receiver']
+            if rcv in by_id and by_id[rcv].create_seq is None:
+                by_id[rcv].create_seq = msgs[mid]['seqno']
 
     return pkg_name, parts, by_id, msgs, order, frags
 
@@ -285,28 +301,37 @@ def build(path):
         if s is None or r is None:
             continue
         seq = m['seqno']
-        is_ret = (m['sort'] == 'reply')
-        pkind = 'Return' if is_ret else 'Call'
-        name = m['name']
+        sort = m['sort']
+        is_ret = (sort == 'reply')
+        is_create = (sort == 'createMessage')
+        pkind = 'Return' if is_ret else ('Create' if is_create else 'Call')
+        full = m['name']
         sx, ex = s.center, r.center
         y = -ymsg(seq)
-        nm_attr = (' name="%s"' % esc(name)) if name else ''
-        w('\t\t\t\t\t\t\t\t\t\t<UML:Message%s xmi.id="%s" visibility="public" sender="%s" receiver="%s">'
-          % (nm_attr, gid(mid), gid(m['sender']), gid(m['receiver'])))
-        w('\t\t\t\t\t\t\t\t\t\t\t<UML:ModelElement.taggedValue>')
-        mt = name if ('(' in name or not name) else name + '()'
-        # respeta parametros y valor de retorno
+        # Convencion de EA (como en la plantilla): el atributo name lleva el nombre
+        # CORTO del metodo; la firma completa con parametros y retorno va en 'mt' y
+        # los parametros en privatedata2 (paramsDlg) -> asi EA los muestra.
         params, retval = '', 'void'
-        mm = re.match(r'^\s*[^()]*\((.*)\)\s*:?\s*(.*)$', name)
-        if mm:
-            params = mm.group(1).strip()
-            retval = (mm.group(2).strip() or 'void')
-        elif is_ret and name:
-            retval = name          # un return: el valor devuelto es la etiqueta
+        if '(' in full:
+            method = full.split('(', 1)[0].strip()
+            inside = full[full.index('(') + 1: full.rindex(')')] if ')' in full else full.split('(', 1)[1]
+            tail = (full[full.rindex(')') + 1:] if ')' in full else '').strip().lstrip(':').strip()
+            disp_name = method
+            mt = full
+            params = inside.strip()
+            retval = tail or 'void'
+        else:
+            disp_name = full
+            mt = full if (is_ret or not full) else full + '()'
+            retval = full if (is_ret and full) else 'void'
         if params:
             pd2 = 'retval=%s;params=;paramsDlg=%s;' % (retval, params)
         else:
             pd2 = 'retval=%s;' % retval
+        nm_attr = (' name="%s"' % esc(disp_name)) if disp_name else ''
+        w('\t\t\t\t\t\t\t\t\t\t<UML:Message%s xmi.id="%s" visibility="public" sender="%s" receiver="%s">'
+          % (nm_attr, gid(mid), gid(m['sender']), gid(m['receiver'])))
+        w('\t\t\t\t\t\t\t\t\t\t\t<UML:ModelElement.taggedValue>')
         tv = [('style', '1'), ('ea_type', 'Sequence'),
               ('direction', 'Source -&gt; Destination'),
               ('linemode', '1'), ('linecolor', '-1'), ('linewidth', '0'),
@@ -331,7 +356,7 @@ def build(path):
               ('sequence_points', 'PtStartX=%d;PtStartY=%d;PtEndX=%d;PtEndY=%d;' % (sx, y, ex, y)),
               ('stateflags', 'Activation=0;'),
               ('virtualInheritance', '0'), ('diagram', DIAGID)]
-        if name:
+        if mt:
             tv.append(('mt', mt))
         for t, v in tv:
             w('\t\t\t\t\t\t\t\t\t\t\t\t<UML:TaggedValue tag="%s" value="%s"/>' % (t, esc(v) if t != 'direction' else v))
@@ -408,11 +433,13 @@ def build(path):
     w('\t\t\t</UML:ModelElement.taggedValue>')
     w('\t\t\t<UML:Diagram.element>')
     seqn = 0
-    # lifelines y actores
+    # lifelines y actores. Un objeto creado (lifecycle New) arranca su lifeline en
+    # el punto del mensaje «create» en lugar de en la parte superior.
     for p in parts:
         seqn += 1
-        w('\t\t\t\t<UML:DiagramElement geometry="Left=%d;Top=50;Right=%d;Bottom=%d;" subject="%s" seqno="%d" style="DUID=%s;"/>'
-          % (p.left, p.right, bottom, gid(p.id), seqn, uuid.uuid4().hex[:8].upper()))
+        ptop = (ymsg(p.create_seq) - 18) if getattr(p, 'create_seq', None) else 50
+        w('\t\t\t\t<UML:DiagramElement geometry="Left=%d;Top=%d;Right=%d;Bottom=%d;" subject="%s" seqno="%d" style="DUID=%s;"/>'
+          % (p.left, ptop, p.right, bottom, gid(p.id), seqn, uuid.uuid4().hex[:8].upper()))
     # fragmentos
     for fr in frags:
         seqn += 1

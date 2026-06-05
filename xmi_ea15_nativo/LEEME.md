@@ -25,13 +25,19 @@ Este dialecto es el que importa de forma fiable en **Enterprise Architect 15**
 - **Sin capa de Base de Datos (`BD`)**: el flujo llega solo hasta la capa
   **DAO / DTO**. Los mensajes hacia/desde `BD` (consultas SQL, `ResultSet`, etc.)
   se omitieron y los `seqno` se renumeraron de forma contigua.
-- **Parámetros y valores de retorno respetados**: las etiquetas conservan firmas
-  completas (`metodo(args) : Retorno`) y se reflejan en `privatedata2`
-  (`retval=...;paramsDlg=...`).
+- **Parámetros y valores de retorno respetados**: siguiendo la convención de EA,
+  el atributo `name` lleva el nombre corto del método y la **firma completa**
+  (`metodo(args) : Retorno`) va en `mt`, con los parámetros en `privatedata2`
+  (`paramsDlg=...`). Así EA muestra los argumentos (p.ej. el String de `showAlert`
+  o el id en los `delete`).
 - **Mensajes**: llamadas `synchCall` → **Synch / Call** (flecha sólida);
   `reply` → **Return** (línea punteada `-->`).
-- **Estereotipos de robustez**: GUI «boundary», Controller/DAO/Loader/Checker/
-  Generator «control», DTO «entity», Actor `uml:Actor`.
+- **Líneas de vida**: solo la **GUI** («boundary») y el **Controller** («control»)
+  llevan icono de robustez. Los **DAO** y **DTO** (y Loader/Checker/Generator) son
+  **objetos rectangulares** (sin estereotipo). El Actor es `uml:Actor`.
+- **Creación de objetos**: los objetos creados con un mensaje «create»
+  (`new Tipo()`) arrancan su línea de vida en el punto de creación (lifecycle
+  **New**), no en la parte superior.
 - **Fragmentos combinados** `alt` / `opt` / `loop` como `InteractionFragment`
   nativo, con sus guardas como particiones (operandos).
 
