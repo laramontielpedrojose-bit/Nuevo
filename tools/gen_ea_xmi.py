@@ -308,15 +308,15 @@ def build(path):
         full = m['name']
         sx, ex = s.center, r.center
         y = -ymsg(seq)
-        # Convencion de EA (como en la plantilla): el atributo name lleva el nombre
-        # CORTO del metodo; la firma completa con parametros y retorno va en 'mt' y
-        # los parametros en privatedata2 (paramsDlg) -> asi EA los muestra.
+        # El atributo name DEBE llevar la etiqueta completa CON parametros: EA
+        # muestra en el diagrama el 'name' del conector (no el 'mt'). La firma
+        # tambien se guarda en mt y los parametros en privatedata2 (paramsDlg).
         params, retval = '', 'void'
         if '(' in full:
             method = full.split('(', 1)[0].strip()
             inside = full[full.index('(') + 1: full.rindex(')')] if ')' in full else full.split('(', 1)[1]
             tail = (full[full.rindex(')') + 1:] if ')' in full else '').strip().lstrip(':').strip()
-            disp_name = method
+            disp_name = full
             mt = full
             params = inside.strip()
             retval = tail or 'void'

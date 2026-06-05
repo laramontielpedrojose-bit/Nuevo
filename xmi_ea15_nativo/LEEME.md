@@ -25,11 +25,12 @@ Este dialecto es el que importa de forma fiable en **Enterprise Architect 15**
 - **Sin capa de Base de Datos (`BD`)**: el flujo llega solo hasta la capa
   **DAO / DTO**. Los mensajes hacia/desde `BD` (consultas SQL, `ResultSet`, etc.)
   se omitieron y los `seqno` se renumeraron de forma contigua.
-- **Parámetros y valores de retorno respetados**: siguiendo la convención de EA,
-  el atributo `name` lleva el nombre corto del método y la **firma completa**
-  (`metodo(args) : Retorno`) va en `mt`, con los parámetros en `privatedata2`
-  (`paramsDlg=...`). Así EA muestra los argumentos (p.ej. el String de `showAlert`
-  o el id en los `delete`).
+- **Parámetros y valores de retorno**: el atributo `name` de cada mensaje lleva la
+  **etiqueta completa con sus argumentos** (`showAlert("...", "...", WARNING)`,
+  `deleteProject(idProject)`, `setMatricula(idTextField.getText())`, …), porque EA
+  muestra en el diagrama el `name` del conector. La firma se replica en `mt` y los
+  parámetros en `privatedata2` (`paramsDlg=...`). Las etiquetas son idénticas a las
+  definidas en los `.puml` de `diagramas_secuencia/` (la fuente de los parámetros).
 - **Mensajes**: llamadas `synchCall` → **Synch / Call** (flecha sólida);
   `reply` → **Return** (línea punteada `-->`).
 - **Líneas de vida**: solo la **GUI** («boundary») y el **Controller** («control»)
