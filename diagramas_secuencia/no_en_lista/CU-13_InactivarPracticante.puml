@@ -1,0 +1,72 @@
+@startuml CU-13_InactivarPracticante
+!include _comun.puml
+title CU-13 Inactivar Practicante
+
+actor Coordinador
+boundary ":GUIDeactivateIntern" as UI
+participant ":DeactivateInternController" as C
+participant ":InternDAO" as DAO
+database "BD" as BD
+
+== Recuperar y mostrar practicantes activos ==
+Coordinador -> UI : abrir "Inactivar Practicante"
+activate UI
+UI -> C : initialize()
+activate C
+C -> DAO : findAllActiveinterns()
+activate DAO
+DAO -> BD : SELECT * FROM usuario JOIN practicante WHERE estado = 'Activo'
+activate BD
+BD --> DAO : ResultSet
+deactivate BD
+DAO -> DAO : mapToIntern(resultSet) : List<Intern>
+DAO --> C : List<Intern>
+deactivate DAO
+C -> UI : internsTableView.setItems(List<Intern>)
+UI --> Coordinador : muestra practicantes activos
+
+== Inactivar practicante ==
+Coordinador -> UI : clic en "Inactivar"
+UI -> C : inactivateIntern(actionEvent)
+
+alt [selectedItem == null]
+    C -> UI : showAlert("Sin selección", "Seleccione un practicante.", WARNING)
+    UI --> Coordinador : muestra diálogo
+else [practicante seleccionado]
+    C -> UI : showAlertAndWait("Advertencia", "¿Inactivar al practicante?", CONFIRMATION)
+    UI --> Coordinador : muestra diálogo
+    Coordinador -> UI : ButtonType.OK
+    UI --> C : Optional<ButtonType>
+
+    opt [response == OK]
+        C -> DAO : deactivateIntern(user.getId())
+        activate DAO
+        DAO -> BD : UPDATE usuario SET estado = 'Inactivo' WHERE id_usuario = ?
+        activate BD
+        BD --> DAO : filas afectadas
+        deactivate BD
+        DAO --> C : boolean
+        deactivate DAO
+
+        alt [exito]
+            C -> DAO : findAllActiveinterns()
+            activate DAO
+            DAO -> BD : SELECT practicantes activos
+            BD --> DAO : ResultSet
+            DAO -> DAO : mapToIntern(resultSet) : List<Intern>
+            DAO --> C : List<Intern>
+            deactivate DAO
+            C -> UI : internsTableView.setItems(List<Intern>)
+            UI --> Coordinador : muestra lista actualizada
+        else [ServiceException]
+            C -> UI : showAlert("Error", "Servicio no disponible por el momento, intente más tarde.", ERROR)
+            UI --> Coordinador : muestra diálogo
+        else [ValidationException]
+            C -> UI : showAlert("Error", "No se logró comprobar al practicante.", ERROR)
+            UI --> Coordinador : muestra diálogo
+        end
+    end
+end
+deactivate C
+deactivate UI
+@enduml

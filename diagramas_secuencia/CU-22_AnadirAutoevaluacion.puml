@@ -1,0 +1,77 @@
+@startuml CU-22_AnadirAutoevaluacion
+!include _comun.puml
+title CU-22 Anadir Autoevaluacion
+
+actor Practicante
+boundary ":GUIAddSelfEvaluation" as UI
+participant ":AddSelfEvaluationController" as C
+participant ":SelfEvaluationDAO" as SDAO
+participant ":EvaluationPrerequisiteChecker" as CHK
+participant ":ReportEvaluationDAO" as REDAO
+participant ":PracticeDAO" as PDAO
+database "BD" as BD
+
+Practicante -> UI : seleccionar PDF firmado y clic en "Subir"
+activate UI
+UI -> C : processSelectedFile(file)
+activate C
+
+alt [!isPDF(file)]
+    C -> UI : showStatus("El archivo seleccionado no es un PDF válido.")
+    UI --> Practicante : muestra estado
+else [PDF válido]
+    C -> C : copySignedFile()
+    C -> SDAO : updateDocumentPath(selfEvaluation.getIdSelfEvalation(), filePath)
+    activate SDAO
+    SDAO -> BD : UPDATE autoevaluacion SET ruta = ?
+    BD --> SDAO : boolean
+    SDAO --> C : boolean (pathUpdated)
+    deactivate SDAO
+    C -> SDAO : updateStatus(selfEvaluation.getIdSelfEvalation(), "Entregada")
+    activate SDAO
+    SDAO -> BD : UPDATE autoevaluacion SET estado = 'Entregada'
+    BD --> SDAO : boolean
+    SDAO --> C : boolean (statusUpdated)
+    deactivate SDAO
+
+    alt [pathUpdated && statusUpdated]
+        C -> UI : showAlert("Autoevaluación entregada", "Su autoevaluación firmada fue registrada.", INFORMATION)
+        UI --> Practicante : muestra diálogo
+
+        C -> CHK : isPracticeComplete(internId, projectId)
+        activate CHK
+        CHK -> BD : SELECT reportes y evaluaciones
+        BD --> CHK : boolean
+        CHK --> C : boolean
+        deactivate CHK
+
+        opt [practica completa]
+            C -> REDAO : getAveragePracticeGrade(internId)
+            activate REDAO
+            REDAO -> BD : SELECT AVG(calificacion)
+            BD --> REDAO : Double
+            REDAO --> C : Double
+            deactivate REDAO
+            C -> PDAO : concludeActiveByIntern(internId, practiceGrade)
+            activate PDAO
+            PDAO -> BD : UPDATE practica SET estado='Concluida', calificacion=?
+            BD --> PDAO : boolean
+            PDAO --> C : boolean
+            deactivate PDAO
+            C -> UI : showAlert("Práctica concluida", "Cumplió todos los requisitos.", INFORMATION)
+            UI --> Practicante : muestra diálogo
+        end
+    else [no actualizado]
+        C -> UI : showAlert("Error", "No se pudo registrar la autoevaluación.", ERROR)
+        UI --> Practicante : muestra diálogo
+    else [ServiceException]
+        C -> UI : showAlert("Servicio no disponible", "Intente más tarde.", ERROR)
+        UI --> Practicante : muestra diálogo
+    else [IOException]
+        C -> UI : showAlert("Error de archivo", "No se pudo copiar el archivo.", ERROR)
+        UI --> Practicante : muestra diálogo
+    end
+end
+deactivate C
+deactivate UI
+@enduml

@@ -1,0 +1,76 @@
+@startuml CU-11_EliminarProyecto
+!include _comun.puml
+title CU-11 Eliminar Proyecto
+
+actor Coordinador
+boundary ":GUIManageProject" as UI
+participant ":ManageProjectController" as C
+participant ":ProjectDAO" as DAO
+database "BD" as BD
+
+== Recuperar y mostrar proyectos ==
+Coordinador -> UI : abrir "Gestionar Proyectos"
+activate UI
+UI -> C : initialize()
+activate C
+C -> DAO : findAll()
+activate DAO
+DAO -> BD : SELECT * FROM proyecto
+activate BD
+BD --> DAO : ResultSet
+deactivate BD
+DAO -> DAO : mapToProject(resultSet) : List<Project>
+DAO --> C : List<Project>
+deactivate DAO
+C -> UI : tableView.setItems(List<Project>)
+UI --> Coordinador : muestra proyectos
+
+== Eliminar proyecto ==
+Coordinador -> UI : clic en "Eliminar"
+UI -> C : deleteProject(actionEvent)
+
+alt [selectedItem == null]
+    C -> UI : showAlert("Sin selección", "Seleccione un proyecto.", WARNING)
+    UI --> Coordinador : muestra diálogo
+else [proyecto seleccionado]
+    C -> UI : showAlertAndWait("Advertencia", "¿Eliminar el proyecto?", CONFIRMATION)
+    UI --> Coordinador : muestra diálogo
+    Coordinador -> UI : ButtonType.OK
+    UI --> C : Optional<ButtonType>
+
+    opt [response == OK]
+        C -> DAO : deleteProject(idProject)
+        activate DAO
+        DAO -> BD : DELETE FROM proyecto WHERE id_proyecto = ?
+        activate BD
+        BD --> DAO : filas afectadas
+        deactivate BD
+        DAO --> C : int
+        deactivate DAO
+
+        alt [eliminado]
+            C -> DAO : findAll()
+            activate DAO
+            DAO -> BD : SELECT * FROM proyecto
+            BD --> DAO : ResultSet
+            DAO -> DAO : mapToProject(resultSet) : List<Project>
+            DAO --> C : List<Project>
+            deactivate DAO
+            C -> UI : tableView.setItems(List<Project>)
+            C -> UI : showAlert("Éxito", "Proyecto eliminado exitosamente.", INFORMATION)
+            UI --> Coordinador : muestra proyectos y diálogo
+        else [ReferentialIntegrityException]
+            C -> UI : showAlert("No se puede eliminar", "Tiene registros asociados.", ERROR)
+            UI --> Coordinador : muestra diálogo
+        else [ServiceException]
+            C -> UI : showAlert("Servicio no disponible", "Intente más tarde.", ERROR)
+            UI --> Coordinador : muestra diálogo
+        else [ValidationException]
+            C -> UI : showAlert("Error de validación", validationException.getMessage(), ERROR)
+            UI --> Coordinador : muestra diálogo
+        end
+    end
+end
+deactivate C
+deactivate UI
+@enduml

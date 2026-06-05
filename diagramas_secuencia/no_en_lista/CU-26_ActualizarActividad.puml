@@ -1,0 +1,57 @@
+@startuml CU-26_ActualizarActividad
+!include _comun.puml
+title CU-26 Actualizar Actividad
+
+actor Profesor
+boundary ":GUIManageActivities" as UI
+participant ":ManageActivitiesController" as C
+participant "selectedActivity : Activity" as DTO
+participant ":ActivityDAO" as DAO
+database "BD" as BD
+
+Profesor -> UI : seleccionar actividad, editar campos y clic en "Actualizar"
+activate UI
+UI -> C : updateActivity(actionEvent)
+activate C
+
+alt [campo requerido vacío]
+    C -> UI : showAlert("Campo requerido", "Complete los campos.", WARNING)
+    UI --> Profesor : muestra diálogo
+else [fechas fuera del rango del proyecto]
+    C -> UI : showAlert("Fechas fuera del rango del proyecto", "Ajuste las fechas.", WARNING)
+    UI --> Profesor : muestra diálogo
+else [datos válidos]
+    note over C, DTO : selectedActivity fue recuperada de la actividad seleccionada
+    C -> DTO : setName(nameTextField.getText())
+    activate DTO
+    C -> DTO : setDescription(descriptionTextArea.getText())
+    C -> DTO : setStartDate(fechaInicioPicker.getValue())
+    C -> DTO : setEndDate(fechaFinPicker.getValue())
+
+    C -> DAO : update(selectedActivity)
+    activate DAO
+    DAO -> DTO : getName() / getDescription() / getStartDate() / getEndDate()
+    DTO --> DAO : valores
+    DAO -> BD : UPDATE actividad SET nombre=?, descripcion=?, ... WHERE id_actividad=?
+    activate BD
+    BD --> DAO : filas afectadas
+    deactivate BD
+    DAO --> C : boolean
+    deactivate DAO
+    deactivate DTO
+
+    alt [actualizada]
+        C -> C : refreshActivities(idProject)
+        C -> UI : showAlert("Actividad actualizada", "La actividad fue actualizada correctamente.", INFORMATION)
+        UI --> Profesor : muestra diálogo
+    else [ValidationException]
+        C -> UI : showAlert("Error de validación", validationException.getMessage(), ERROR)
+        UI --> Profesor : muestra diálogo
+    else [ServiceException]
+        C -> UI : showAlert("Servicio no disponible", "No se pudo actualizar la actividad. Intente más tarde.", ERROR)
+        UI --> Profesor : muestra diálogo
+    end
+end
+deactivate C
+deactivate UI
+@enduml

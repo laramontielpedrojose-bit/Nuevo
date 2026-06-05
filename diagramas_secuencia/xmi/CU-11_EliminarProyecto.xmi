@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
+  <xmi:Documentation exporter="SPP puml2xmi" exporterVersion="1.0"/>
+
+  <uml:Model xmi:type="uml:Model" xmi:id="model_137" name="CU-11_EliminarProyecto">
+    <packagedElement xmi:type="uml:Collaboration" xmi:id="collab_6" name="CU-11_EliminarProyecto">
+      <ownedBehavior xmi:type="uml:Interaction" xmi:id="int_7" name="CU-11_EliminarProyecto">
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_1" name="Coordinador"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_2" name=":GUIManageProject"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_3" name=":ManageProjectController"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_4" name=":ProjectDAO"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_5" name="BD"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_9" name="send" covered="ll_1" message="msg_8"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_10" name="recv" covered="ll_2" message="msg_8"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_12" name="send" covered="ll_2" message="msg_11"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_13" name="recv" covered="ll_3" message="msg_11"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_15" name="send" covered="ll_3" message="msg_14"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_16" name="recv" covered="ll_4" message="msg_14"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_18" name="send" covered="ll_4" message="msg_17"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_19" name="recv" covered="ll_5" message="msg_17"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_21" name="send" covered="ll_5" message="msg_20"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_22" name="recv" covered="ll_4" message="msg_20"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_24" name="send" covered="ll_4" message="msg_23"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_25" name="recv" covered="ll_4" message="msg_23"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_27" name="send" covered="ll_4" message="msg_26"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_28" name="recv" covered="ll_3" message="msg_26"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_30" name="send" covered="ll_3" message="msg_29"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_31" name="recv" covered="ll_2" message="msg_29"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_33" name="send" covered="ll_2" message="msg_32"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_34" name="recv" covered="ll_1" message="msg_32"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_36" name="send" covered="ll_1" message="msg_35"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_37" name="recv" covered="ll_2" message="msg_35"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_39" name="send" covered="ll_2" message="msg_38"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_40" name="recv" covered="ll_3" message="msg_38"/>
+        <fragment xmi:type="uml:CombinedFragment" xmi:id="cf_41" interactionOperator="alt" covered="ll_5 ll_3 ll_1 ll_4 ll_2">
+          <operand xmi:type="uml:InteractionOperand" xmi:id="op_42">
+            <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_43">
+              <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_44" body="selectedItem == null"/>
+            </guard>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_46" name="send" covered="ll_3" message="msg_45"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_47" name="recv" covered="ll_2" message="msg_45"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_49" name="send" covered="ll_2" message="msg_48"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_50" name="recv" covered="ll_1" message="msg_48"/>
+          </operand>
+          <operand xmi:type="uml:InteractionOperand" xmi:id="op_51">
+            <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_52">
+              <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_53" body="proyecto seleccionado"/>
+            </guard>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_55" name="send" covered="ll_3" message="msg_54"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_56" name="recv" covered="ll_2" message="msg_54"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_58" name="send" covered="ll_2" message="msg_57"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_59" name="recv" covered="ll_1" message="msg_57"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_61" name="send" covered="ll_1" message="msg_60"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_62" name="recv" covered="ll_2" message="msg_60"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_64" name="send" covered="ll_2" message="msg_63"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_65" name="recv" covered="ll_3" message="msg_63"/>
+              <fragment xmi:type="uml:CombinedFragment" xmi:id="cf_66" interactionOperator="opt" covered="ll_5 ll_3 ll_1 ll_4 ll_2">
+                <operand xmi:type="uml:InteractionOperand" xmi:id="op_67">
+                  <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_68">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_69" body="response == OK"/>
+                  </guard>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_71" name="send" covered="ll_3" message="msg_70"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_72" name="recv" covered="ll_4" message="msg_70"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_74" name="send" covered="ll_4" message="msg_73"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_75" name="recv" covered="ll_5" message="msg_73"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_77" name="send" covered="ll_5" message="msg_76"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_78" name="recv" covered="ll_4" message="msg_76"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_80" name="send" covered="ll_4" message="msg_79"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_81" name="recv" covered="ll_3" message="msg_79"/>
+                    <fragment xmi:type="uml:CombinedFragment" xmi:id="cf_82" interactionOperator="alt" covered="ll_5 ll_3 ll_1 ll_4 ll_2">
+                      <operand xmi:type="uml:InteractionOperand" xmi:id="op_83">
+                        <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_84">
+                          <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_85" body="eliminado"/>
+                        </guard>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_87" name="send" covered="ll_3" message="msg_86"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_88" name="recv" covered="ll_4" message="msg_86"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_90" name="send" covered="ll_4" message="msg_89"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_91" name="recv" covered="ll_5" message="msg_89"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_93" name="send" covered="ll_5" message="msg_92"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_94" name="recv" covered="ll_4" message="msg_92"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_96" name="send" covered="ll_4" message="msg_95"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_97" name="recv" covered="ll_4" message="msg_95"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_99" name="send" covered="ll_4" message="msg_98"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_100" name="recv" covered="ll_3" message="msg_98"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_102" name="send" covered="ll_3" message="msg_101"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_103" name="recv" covered="ll_2" message="msg_101"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_105" name="send" covered="ll_3" message="msg_104"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_106" name="recv" covered="ll_2" message="msg_104"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_108" name="send" covered="ll_2" message="msg_107"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_109" name="recv" covered="ll_1" message="msg_107"/>
+                      </operand>
+                      <operand xmi:type="uml:InteractionOperand" xmi:id="op_110">
+                        <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_111">
+                          <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_112" body="ReferentialIntegrityException"/>
+                        </guard>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_114" name="send" covered="ll_3" message="msg_113"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_115" name="recv" covered="ll_2" message="msg_113"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_117" name="send" covered="ll_2" message="msg_116"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_118" name="recv" covered="ll_1" message="msg_116"/>
+                      </operand>
+                      <operand xmi:type="uml:InteractionOperand" xmi:id="op_119">
+                        <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_120">
+                          <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_121" body="ServiceException"/>
+                        </guard>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_123" name="send" covered="ll_3" message="msg_122"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_124" name="recv" covered="ll_2" message="msg_122"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_126" name="send" covered="ll_2" message="msg_125"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_127" name="recv" covered="ll_1" message="msg_125"/>
+                      </operand>
+                      <operand xmi:type="uml:InteractionOperand" xmi:id="op_128">
+                        <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_129">
+                          <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_130" body="ValidationException"/>
+                        </guard>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_132" name="send" covered="ll_3" message="msg_131"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_133" name="recv" covered="ll_2" message="msg_131"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_135" name="send" covered="ll_2" message="msg_134"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_136" name="recv" covered="ll_1" message="msg_134"/>
+                      </operand>
+                    </fragment>
+                </operand>
+              </fragment>
+          </operand>
+        </fragment>
+        <message xmi:type="uml:Message" xmi:id="msg_8" name="abrir &quot;Gestionar Proyectos&quot;" messageSort="synchCall" sendEvent="mos_9" receiveEvent="mos_10"/>
+        <message xmi:type="uml:Message" xmi:id="msg_11" name="initialize()" messageSort="synchCall" sendEvent="mos_12" receiveEvent="mos_13"/>
+        <message xmi:type="uml:Message" xmi:id="msg_14" name="findAll()" messageSort="synchCall" sendEvent="mos_15" receiveEvent="mos_16"/>
+        <message xmi:type="uml:Message" xmi:id="msg_17" name="SELECT * FROM proyecto" messageSort="synchCall" sendEvent="mos_18" receiveEvent="mos_19"/>
+        <message xmi:type="uml:Message" xmi:id="msg_20" name="ResultSet" messageSort="reply" sendEvent="mos_21" receiveEvent="mos_22"/>
+        <message xmi:type="uml:Message" xmi:id="msg_23" name="mapToProject(resultSet) : List&lt;Project&gt;" messageSort="synchCall" sendEvent="mos_24" receiveEvent="mos_25"/>
+        <message xmi:type="uml:Message" xmi:id="msg_26" name="List&lt;Project&gt;" messageSort="reply" sendEvent="mos_27" receiveEvent="mos_28"/>
+        <message xmi:type="uml:Message" xmi:id="msg_29" name="tableView.setItems(List&lt;Project&gt;)" messageSort="synchCall" sendEvent="mos_30" receiveEvent="mos_31"/>
+        <message xmi:type="uml:Message" xmi:id="msg_32" name="muestra proyectos" messageSort="reply" sendEvent="mos_33" receiveEvent="mos_34"/>
+        <message xmi:type="uml:Message" xmi:id="msg_35" name="clic en &quot;Eliminar&quot;" messageSort="synchCall" sendEvent="mos_36" receiveEvent="mos_37"/>
+        <message xmi:type="uml:Message" xmi:id="msg_38" name="deleteProject(actionEvent)" messageSort="synchCall" sendEvent="mos_39" receiveEvent="mos_40"/>
+        <message xmi:type="uml:Message" xmi:id="msg_45" name="showAlert(&quot;Sin selección&quot;, &quot;Seleccione un proyecto.&quot;, WARNING)" messageSort="synchCall" sendEvent="mos_46" receiveEvent="mos_47"/>
+        <message xmi:type="uml:Message" xmi:id="msg_48" name="muestra diálogo" messageSort="reply" sendEvent="mos_49" receiveEvent="mos_50"/>
+        <message xmi:type="uml:Message" xmi:id="msg_54" name="showAlertAndWait(&quot;Advertencia&quot;, &quot;¿Eliminar el proyecto?&quot;, CONFIRMATION)" messageSort="synchCall" sendEvent="mos_55" receiveEvent="mos_56"/>
+        <message xmi:type="uml:Message" xmi:id="msg_57" name="muestra diálogo" messageSort="reply" sendEvent="mos_58" receiveEvent="mos_59"/>
+        <message xmi:type="uml:Message" xmi:id="msg_60" name="ButtonType.OK" messageSort="synchCall" sendEvent="mos_61" receiveEvent="mos_62"/>
+        <message xmi:type="uml:Message" xmi:id="msg_63" name="Optional&lt;ButtonType&gt;" messageSort="reply" sendEvent="mos_64" receiveEvent="mos_65"/>
+        <message xmi:type="uml:Message" xmi:id="msg_70" name="deleteProject(idProject)" messageSort="synchCall" sendEvent="mos_71" receiveEvent="mos_72"/>
+        <message xmi:type="uml:Message" xmi:id="msg_73" name="DELETE FROM proyecto WHERE id_proyecto = ?" messageSort="synchCall" sendEvent="mos_74" receiveEvent="mos_75"/>
+        <message xmi:type="uml:Message" xmi:id="msg_76" name="filas afectadas" messageSort="reply" sendEvent="mos_77" receiveEvent="mos_78"/>
+        <message xmi:type="uml:Message" xmi:id="msg_79" name="int" messageSort="reply" sendEvent="mos_80" receiveEvent="mos_81"/>
+        <message xmi:type="uml:Message" xmi:id="msg_86" name="findAll()" messageSort="synchCall" sendEvent="mos_87" receiveEvent="mos_88"/>
+        <message xmi:type="uml:Message" xmi:id="msg_89" name="SELECT * FROM proyecto" messageSort="synchCall" sendEvent="mos_90" receiveEvent="mos_91"/>
+        <message xmi:type="uml:Message" xmi:id="msg_92" name="ResultSet" messageSort="reply" sendEvent="mos_93" receiveEvent="mos_94"/>
+        <message xmi:type="uml:Message" xmi:id="msg_95" name="mapToProject(resultSet) : List&lt;Project&gt;" messageSort="synchCall" sendEvent="mos_96" receiveEvent="mos_97"/>
+        <message xmi:type="uml:Message" xmi:id="msg_98" name="List&lt;Project&gt;" messageSort="reply" sendEvent="mos_99" receiveEvent="mos_100"/>
+        <message xmi:type="uml:Message" xmi:id="msg_101" name="tableView.setItems(List&lt;Project&gt;)" messageSort="synchCall" sendEvent="mos_102" receiveEvent="mos_103"/>
+        <message xmi:type="uml:Message" xmi:id="msg_104" name="showAlert(&quot;Éxito&quot;, &quot;Proyecto eliminado exitosamente.&quot;, INFORMATION)" messageSort="synchCall" sendEvent="mos_105" receiveEvent="mos_106"/>
+        <message xmi:type="uml:Message" xmi:id="msg_107" name="muestra proyectos y diálogo" messageSort="reply" sendEvent="mos_108" receiveEvent="mos_109"/>
+        <message xmi:type="uml:Message" xmi:id="msg_113" name="showAlert(&quot;No se puede eliminar&quot;, &quot;Tiene registros asociados.&quot;, ERROR)" messageSort="synchCall" sendEvent="mos_114" receiveEvent="mos_115"/>
+        <message xmi:type="uml:Message" xmi:id="msg_116" name="muestra diálogo" messageSort="reply" sendEvent="mos_117" receiveEvent="mos_118"/>
+        <message xmi:type="uml:Message" xmi:id="msg_122" name="showAlert(&quot;Servicio no disponible&quot;, &quot;Intente más tarde.&quot;, ERROR)" messageSort="synchCall" sendEvent="mos_123" receiveEvent="mos_124"/>
+        <message xmi:type="uml:Message" xmi:id="msg_125" name="muestra diálogo" messageSort="reply" sendEvent="mos_126" receiveEvent="mos_127"/>
+        <message xmi:type="uml:Message" xmi:id="msg_131" name="showAlert(&quot;Error de validación&quot;, validationException.getMessage(), ERROR)" messageSort="synchCall" sendEvent="mos_132" receiveEvent="mos_133"/>
+        <message xmi:type="uml:Message" xmi:id="msg_134" name="muestra diálogo" messageSort="reply" sendEvent="mos_135" receiveEvent="mos_136"/>
+      </ownedBehavior>
+    </packagedElement>
+  </uml:Model>
+</xmi:XMI>

@@ -1,0 +1,30 @@
+' Estilo comun para los diagramas de secuencia del SPP.
+' Se incluye en cada diagrama con: !include _comun.puml
+' (este archivo NO lleva @startuml/@enduml a proposito)
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam roundcorner 6
+skinparam sequenceMessageAlign center
+
+skinparam actor {
+    BackgroundColor #FFFFFF
+    BorderColor #2E6FA3
+}
+skinparam participant {
+    BackgroundColor #D5E8F0
+    BorderColor #2E6FA3
+    FontColor #1A3C53
+}
+skinparam database {
+    BackgroundColor #E6F2D9
+    BorderColor #5B8C3E
+}
+skinparam sequence {
+    LifeLineBorderColor #9AB8CC
+    LifeLineBackgroundColor #F2F7FB
+    ArrowColor #2E6FA3
+    GroupBorderColor #2E6FA3
+    GroupBackgroundColor #EAF3FA
+    GroupHeaderFontColor #1A3C53
+}

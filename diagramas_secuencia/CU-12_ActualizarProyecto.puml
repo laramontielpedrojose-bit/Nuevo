@@ -1,0 +1,82 @@
+@startuml CU-12_ActualizarProyecto
+!include _comun.puml
+title CU-12 Actualizar Proyecto
+
+actor Coordinador
+boundary ":GUIUpdateProject" as UI
+participant ":UpdateProjectController" as C
+participant "project : Project" as DTO
+participant ":ProfessorDAO" as PFDAO
+participant ":TechnicalResponsibleDAO" as TRDAO
+participant ":ProjectDAO" as DAO
+database "BD" as BD
+
+== Recuperar y mostrar datos del proyecto ==
+Coordinador -> UI : abrir "Actualizar Proyecto" (proyecto seleccionado)
+activate UI
+UI -> C : setData(project)
+activate C
+C -> DTO : getName() / getDescription() / getObjetivo() / getMaximumPlaces() / getNrc()
+activate DTO
+DTO --> C : valores actuales
+deactivate DTO
+C -> PFDAO : findActiveProfessors()
+activate PFDAO
+PFDAO -> BD : SELECT profesores activos
+BD --> PFDAO : ResultSet
+PFDAO -> PFDAO : mapToProfessor(rs) -> List<Professor>
+PFDAO --> C : profesores
+deactivate PFDAO
+C -> TRDAO : findByOrganization(idOrganizacion)
+activate TRDAO
+TRDAO -> BD : SELECT tecnicos de la organizacion
+BD --> TRDAO : ResultSet
+TRDAO -> TRDAO : mapToTechnical(rs) -> List<TechnicalSupervisor>
+TRDAO --> C : tecnicos
+deactivate TRDAO
+C --> UI : llenar campos y combos
+UI --> Coordinador : muestra formulario con datos del proyecto
+
+== Actualizar proyecto ==
+Coordinador -> UI : editar campos y clic en "Actualizar"
+UI -> C : updateProject(datos)
+
+alt [campos vacios]
+    C --> UI : "Campos vacios"
+    UI --> Coordinador : muestra "Campos vacios"
+else [datos completos]
+    C -> DTO : setName(nombre)
+    activate DTO
+    C -> DTO : setDescription(descripcion)
+    C -> DTO : setObjetivo(objetivo)
+    C -> DTO : setMaximumPlaces(cupoMaximo)
+    C -> DTO : setAvaliablePlaces(cupoDisponible)
+    C -> DTO : setIdProfessor(idProfesor)
+    C -> DTO : setIdTechnicalSupervisor(idTecnico)
+
+    C -> DAO : update(project)
+    activate DAO
+    DAO -> DTO : getName() / getDescription() / ...
+    DTO --> DAO : valores
+    DAO -> BD : UPDATE proyecto
+    activate BD
+    BD --> DAO : filas afectadas
+    deactivate BD
+    DAO --> C : actualizado
+    deactivate DAO
+    deactivate DTO
+
+    alt [actualizado]
+        C --> UI : "Proyecto actualizado"
+        UI --> Coordinador : muestra "Proyecto actualizado"
+    else [ValidationException]
+        C --> UI : "Error de validacion"
+        UI --> Coordinador : muestra "Error de validacion"
+    else [ServiceException]
+        C --> UI : "Servicio no disponible"
+        UI --> Coordinador : muestra "Servicio no disponible"
+    end
+end
+deactivate C
+deactivate UI
+@enduml

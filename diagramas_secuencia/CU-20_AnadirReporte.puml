@@ -1,0 +1,76 @@
+@startuml CU-20_AnadirReporte
+!include _comun.puml
+title CU-20 Anadir Reporte
+
+actor Practicante
+boundary ":GUIAddReport" as UI
+participant ":AddReportController" as C
+participant ":ReportDAO" as DAO
+database "BD" as BD
+
+== Recuperar y mostrar reportes pendientes ==
+Practicante -> UI : abrir "Añadir Reporte"
+activate UI
+UI -> C : loadReports(internId)
+activate C
+C -> DAO : getByIdInternWithMonth(internId)
+activate DAO
+DAO -> BD : SELECT * FROM reporte WHERE id_practicante = ?
+activate BD
+BD --> DAO : ResultSet
+deactivate BD
+DAO -> DAO : mapToReport(resultSet) : List<Report>
+DAO --> C : List<Report>
+deactivate DAO
+C -> UI : reportsTableView.setItems(List<Report>)
+UI --> Practicante : muestra reportes pendientes
+
+== Subir documento firmado ==
+Practicante -> UI : seleccionar reporte, elegir PDF firmado y subir
+UI -> C : processSelectedFile(file)
+
+alt [!isPDF(file)]
+    C -> UI : showStatus("El archivo seleccionado no es un PDF válido.")
+    UI --> Practicante : muestra estado
+else [reporte no seleccionado]
+    C -> UI : showStatus("Seleccione un reporte de la tabla.")
+    UI --> Practicante : muestra estado
+else [PDF válido]
+    C -> C : copyFileToStorage()
+    C -> DAO : updateSignedDocumentPath(selectedReport.getIdReport(), signedPath)
+    activate DAO
+    DAO -> BD : UPDATE reporte SET ruta_firmado = ? WHERE id_reporte = ?
+    activate BD
+    BD --> DAO : filas afectadas
+    deactivate BD
+    DAO --> C : boolean
+    deactivate DAO
+
+    opt [isLate]
+        C -> DAO : markLateDelivery(selectedReport.getIdReport())
+        activate DAO
+        DAO -> BD : UPDATE reporte SET entrega_tardia = 1
+        BD --> DAO : boolean
+        DAO --> C : boolean
+        deactivate DAO
+        C -> UI : showAlert("Entrega tardía", "El documento se registró como entrega tardía.", WARNING)
+        UI --> Practicante : muestra diálogo
+    end
+
+    alt [actualizado]
+        C -> UI : showAlert("Documento firmado subido", "El documento se subió correctamente.", INFORMATION)
+        UI --> Practicante : muestra diálogo
+    else [ValidationException]
+        C -> UI : showAlert("Error de validación", validationException.getMessage(), ERROR)
+        UI --> Practicante : muestra diálogo
+    else [ServiceException]
+        C -> UI : showAlert("Servicio no disponible", "Intente más tarde.", ERROR)
+        UI --> Practicante : muestra diálogo
+    else [IOException]
+        C -> UI : showAlert("Error de archivo", "No se pudo copiar el archivo.", ERROR)
+        UI --> Practicante : muestra diálogo
+    end
+end
+deactivate C
+deactivate UI
+@enduml

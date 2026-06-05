@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
+  <xmi:Documentation exporter="SPP puml2xmi" exporterVersion="1.0"/>
+
+  <uml:Model xmi:type="uml:Model" xmi:id="model_641" name="CU-16_EvaluarReporte">
+    <packagedElement xmi:type="uml:Collaboration" xmi:id="collab_441" name="CU-16_EvaluarReporte">
+      <ownedBehavior xmi:type="uml:Interaction" xmi:id="int_442" name="CU-16_EvaluarReporte">
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_432" name="Profesor"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_433" name=":GUIEvaluateReport"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_434" name=":EvaluateReportController"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_435" name=":ProjectDAO"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_436" name=":InternDAO"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_437" name=":ReportDAO"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_438" name=":ReportEvaluationDAO"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_439" name=":PracticeDAO"/>
+        <lifeline xmi:type="uml:Lifeline" xmi:id="ll_440" name="BD"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_444" name="send" covered="ll_432" message="msg_443"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_445" name="recv" covered="ll_433" message="msg_443"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_447" name="send" covered="ll_433" message="msg_446"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_448" name="recv" covered="ll_434" message="msg_446"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_450" name="send" covered="ll_434" message="msg_449"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_451" name="recv" covered="ll_435" message="msg_449"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_453" name="send" covered="ll_435" message="msg_452"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_454" name="recv" covered="ll_440" message="msg_452"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_456" name="send" covered="ll_440" message="msg_455"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_457" name="recv" covered="ll_435" message="msg_455"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_459" name="send" covered="ll_435" message="msg_458"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_460" name="recv" covered="ll_435" message="msg_458"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_462" name="send" covered="ll_435" message="msg_461"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_463" name="recv" covered="ll_434" message="msg_461"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_465" name="send" covered="ll_434" message="msg_464"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_466" name="recv" covered="ll_433" message="msg_464"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_468" name="send" covered="ll_433" message="msg_467"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_469" name="recv" covered="ll_432" message="msg_467"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_471" name="send" covered="ll_432" message="msg_470"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_472" name="recv" covered="ll_433" message="msg_470"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_474" name="send" covered="ll_433" message="msg_473"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_475" name="recv" covered="ll_434" message="msg_473"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_477" name="send" covered="ll_434" message="msg_476"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_478" name="recv" covered="ll_436" message="msg_476"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_480" name="send" covered="ll_436" message="msg_479"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_481" name="recv" covered="ll_440" message="msg_479"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_483" name="send" covered="ll_440" message="msg_482"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_484" name="recv" covered="ll_436" message="msg_482"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_486" name="send" covered="ll_436" message="msg_485"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_487" name="recv" covered="ll_436" message="msg_485"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_489" name="send" covered="ll_436" message="msg_488"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_490" name="recv" covered="ll_434" message="msg_488"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_492" name="send" covered="ll_434" message="msg_491"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_493" name="recv" covered="ll_433" message="msg_491"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_495" name="send" covered="ll_433" message="msg_494"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_496" name="recv" covered="ll_432" message="msg_494"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_498" name="send" covered="ll_432" message="msg_497"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_499" name="recv" covered="ll_433" message="msg_497"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_501" name="send" covered="ll_433" message="msg_500"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_502" name="recv" covered="ll_434" message="msg_500"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_504" name="send" covered="ll_434" message="msg_503"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_505" name="recv" covered="ll_437" message="msg_503"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_507" name="send" covered="ll_437" message="msg_506"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_508" name="recv" covered="ll_440" message="msg_506"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_510" name="send" covered="ll_440" message="msg_509"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_511" name="recv" covered="ll_437" message="msg_509"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_513" name="send" covered="ll_437" message="msg_512"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_514" name="recv" covered="ll_437" message="msg_512"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_516" name="send" covered="ll_437" message="msg_515"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_517" name="recv" covered="ll_434" message="msg_515"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_519" name="send" covered="ll_434" message="msg_518"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_520" name="recv" covered="ll_433" message="msg_518"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_522" name="send" covered="ll_433" message="msg_521"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_523" name="recv" covered="ll_432" message="msg_521"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_525" name="send" covered="ll_432" message="msg_524"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_526" name="recv" covered="ll_433" message="msg_524"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_528" name="send" covered="ll_433" message="msg_527"/>
+        <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_529" name="recv" covered="ll_434" message="msg_527"/>
+        <fragment xmi:type="uml:CombinedFragment" xmi:id="cf_530" interactionOperator="alt" covered="ll_440 ll_434 ll_439 ll_432 ll_437 ll_438 ll_433">
+          <operand xmi:type="uml:InteractionOperand" xmi:id="op_531">
+            <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_532">
+              <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_533" body="selectedReport == null"/>
+            </guard>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_535" name="send" covered="ll_434" message="msg_534"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_536" name="recv" covered="ll_433" message="msg_534"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_538" name="send" covered="ll_433" message="msg_537"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_539" name="recv" covered="ll_432" message="msg_537"/>
+          </operand>
+          <operand xmi:type="uml:InteractionOperand" xmi:id="op_540">
+            <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_541">
+              <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_542" body="observación vacía"/>
+            </guard>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_544" name="send" covered="ll_434" message="msg_543"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_545" name="recv" covered="ll_433" message="msg_543"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_547" name="send" covered="ll_433" message="msg_546"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_548" name="recv" covered="ll_432" message="msg_546"/>
+          </operand>
+          <operand xmi:type="uml:InteractionOperand" xmi:id="op_549">
+            <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_550">
+              <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_551" body="parseGrade(grade) == null"/>
+            </guard>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_553" name="send" covered="ll_434" message="msg_552"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_554" name="recv" covered="ll_433" message="msg_552"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_556" name="send" covered="ll_433" message="msg_555"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_557" name="recv" covered="ll_432" message="msg_555"/>
+          </operand>
+          <operand xmi:type="uml:InteractionOperand" xmi:id="op_558">
+            <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_559">
+              <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_560" body="datos válidos"/>
+            </guard>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_562" name="send" covered="ll_434" message="msg_561"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_563" name="recv" covered="ll_434" message="msg_561"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_565" name="send" covered="ll_434" message="msg_564"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_566" name="recv" covered="ll_438" message="msg_564"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_568" name="send" covered="ll_438" message="msg_567"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_569" name="recv" covered="ll_440" message="msg_567"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_571" name="send" covered="ll_440" message="msg_570"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_572" name="recv" covered="ll_438" message="msg_570"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_574" name="send" covered="ll_438" message="msg_573"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_575" name="recv" covered="ll_434" message="msg_573"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_577" name="send" covered="ll_434" message="msg_576"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_578" name="recv" covered="ll_437" message="msg_576"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_580" name="send" covered="ll_437" message="msg_579"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_581" name="recv" covered="ll_440" message="msg_579"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_583" name="send" covered="ll_440" message="msg_582"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_584" name="recv" covered="ll_437" message="msg_582"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_586" name="send" covered="ll_437" message="msg_585"/>
+              <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_587" name="recv" covered="ll_434" message="msg_585"/>
+              <fragment xmi:type="uml:CombinedFragment" xmi:id="cf_588" interactionOperator="alt" covered="ll_440 ll_434 ll_439 ll_432 ll_438 ll_433">
+                <operand xmi:type="uml:InteractionOperand" xmi:id="op_589">
+                  <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_590">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_591" body="updated"/>
+                  </guard>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_593" name="send" covered="ll_434" message="msg_592"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_594" name="recv" covered="ll_433" message="msg_592"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_596" name="send" covered="ll_433" message="msg_595"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_597" name="recv" covered="ll_432" message="msg_595"/>
+                    <fragment xmi:type="uml:CombinedFragment" xmi:id="cf_598" interactionOperator="opt" covered="ll_440 ll_434 ll_439 ll_432 ll_438 ll_433">
+                      <operand xmi:type="uml:InteractionOperand" xmi:id="op_599">
+                        <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_600">
+                          <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_601" body="isPracticeComplete"/>
+                        </guard>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_603" name="send" covered="ll_434" message="msg_602"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_604" name="recv" covered="ll_438" message="msg_602"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_606" name="send" covered="ll_438" message="msg_605"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_607" name="recv" covered="ll_440" message="msg_605"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_609" name="send" covered="ll_440" message="msg_608"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_610" name="recv" covered="ll_438" message="msg_608"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_612" name="send" covered="ll_438" message="msg_611"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_613" name="recv" covered="ll_434" message="msg_611"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_615" name="send" covered="ll_434" message="msg_614"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_616" name="recv" covered="ll_439" message="msg_614"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_618" name="send" covered="ll_439" message="msg_617"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_619" name="recv" covered="ll_440" message="msg_617"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_621" name="send" covered="ll_440" message="msg_620"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_622" name="recv" covered="ll_439" message="msg_620"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_624" name="send" covered="ll_439" message="msg_623"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_625" name="recv" covered="ll_434" message="msg_623"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_627" name="send" covered="ll_434" message="msg_626"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_628" name="recv" covered="ll_433" message="msg_626"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_630" name="send" covered="ll_433" message="msg_629"/>
+                          <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_631" name="recv" covered="ll_432" message="msg_629"/>
+                      </operand>
+                    </fragment>
+                </operand>
+                <operand xmi:type="uml:InteractionOperand" xmi:id="op_632">
+                  <guard xmi:type="uml:InteractionConstraint" xmi:id="grd_633">
+                    <specification xmi:type="uml:OpaqueExpression" xmi:id="spec_634" body="ServiceException"/>
+                  </guard>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_636" name="send" covered="ll_434" message="msg_635"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_637" name="recv" covered="ll_433" message="msg_635"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_639" name="send" covered="ll_433" message="msg_638"/>
+                    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="mos_640" name="recv" covered="ll_432" message="msg_638"/>
+                </operand>
+              </fragment>
+          </operand>
+        </fragment>
+        <message xmi:type="uml:Message" xmi:id="msg_443" name="abrir &quot;Evaluar Reportes&quot;" messageSort="synchCall" sendEvent="mos_444" receiveEvent="mos_445"/>
+        <message xmi:type="uml:Message" xmi:id="msg_446" name="initialize()" messageSort="synchCall" sendEvent="mos_447" receiveEvent="mos_448"/>
+        <message xmi:type="uml:Message" xmi:id="msg_449" name="findAll()" messageSort="synchCall" sendEvent="mos_450" receiveEvent="mos_451"/>
+        <message xmi:type="uml:Message" xmi:id="msg_452" name="SELECT proyectos" messageSort="synchCall" sendEvent="mos_453" receiveEvent="mos_454"/>
+        <message xmi:type="uml:Message" xmi:id="msg_455" name="ResultSet" messageSort="reply" sendEvent="mos_456" receiveEvent="mos_457"/>
+        <message xmi:type="uml:Message" xmi:id="msg_458" name="mapToProject(rs) : List&lt;Project&gt;" messageSort="synchCall" sendEvent="mos_459" receiveEvent="mos_460"/>
+        <message xmi:type="uml:Message" xmi:id="msg_461" name="List&lt;Project&gt;" messageSort="reply" sendEvent="mos_462" receiveEvent="mos_463"/>
+        <message xmi:type="uml:Message" xmi:id="msg_464" name="projectComboBox.setItems(List&lt;Project&gt;)" messageSort="synchCall" sendEvent="mos_465" receiveEvent="mos_466"/>
+        <message xmi:type="uml:Message" xmi:id="msg_467" name="muestra proyectos" messageSort="reply" sendEvent="mos_468" receiveEvent="mos_469"/>
+        <message xmi:type="uml:Message" xmi:id="msg_470" name="seleccionar proyecto" messageSort="synchCall" sendEvent="mos_471" receiveEvent="mos_472"/>
+        <message xmi:type="uml:Message" xmi:id="msg_473" name="loadInternsForProject(project)" messageSort="synchCall" sendEvent="mos_474" receiveEvent="mos_475"/>
+        <message xmi:type="uml:Message" xmi:id="msg_476" name="findByProject(project.getIdProject())" messageSort="synchCall" sendEvent="mos_477" receiveEvent="mos_478"/>
+        <message xmi:type="uml:Message" xmi:id="msg_479" name="SELECT practicantes del proyecto" messageSort="synchCall" sendEvent="mos_480" receiveEvent="mos_481"/>
+        <message xmi:type="uml:Message" xmi:id="msg_482" name="ResultSet" messageSort="reply" sendEvent="mos_483" receiveEvent="mos_484"/>
+        <message xmi:type="uml:Message" xmi:id="msg_485" name="mapToIntern(rs) : List&lt;Intern&gt;" messageSort="synchCall" sendEvent="mos_486" receiveEvent="mos_487"/>
+        <message xmi:type="uml:Message" xmi:id="msg_488" name="List&lt;Intern&gt;" messageSort="reply" sendEvent="mos_489" receiveEvent="mos_490"/>
+        <message xmi:type="uml:Message" xmi:id="msg_491" name="internComboBox.setItems(List&lt;Intern&gt;)" messageSort="synchCall" sendEvent="mos_492" receiveEvent="mos_493"/>
+        <message xmi:type="uml:Message" xmi:id="msg_494" name="muestra practicantes" messageSort="reply" sendEvent="mos_495" receiveEvent="mos_496"/>
+        <message xmi:type="uml:Message" xmi:id="msg_497" name="seleccionar practicante" messageSort="synchCall" sendEvent="mos_498" receiveEvent="mos_499"/>
+        <message xmi:type="uml:Message" xmi:id="msg_500" name="loadReportsForIntern(intern)" messageSort="synchCall" sendEvent="mos_501" receiveEvent="mos_502"/>
+        <message xmi:type="uml:Message" xmi:id="msg_503" name="getByInternAndProject(intern.getId(), idProject)" messageSort="synchCall" sendEvent="mos_504" receiveEvent="mos_505"/>
+        <message xmi:type="uml:Message" xmi:id="msg_506" name="SELECT reportes" messageSort="synchCall" sendEvent="mos_507" receiveEvent="mos_508"/>
+        <message xmi:type="uml:Message" xmi:id="msg_509" name="ResultSet" messageSort="reply" sendEvent="mos_510" receiveEvent="mos_511"/>
+        <message xmi:type="uml:Message" xmi:id="msg_512" name="mapToReport(rs) : List&lt;Report&gt;" messageSort="synchCall" sendEvent="mos_513" receiveEvent="mos_514"/>
+        <message xmi:type="uml:Message" xmi:id="msg_515" name="List&lt;Report&gt;" messageSort="reply" sendEvent="mos_516" receiveEvent="mos_517"/>
+        <message xmi:type="uml:Message" xmi:id="msg_518" name="reportsTableView.setItems(List&lt;Report&gt;)" messageSort="synchCall" sendEvent="mos_519" receiveEvent="mos_520"/>
+        <message xmi:type="uml:Message" xmi:id="msg_521" name="muestra reportes del practicante" messageSort="reply" sendEvent="mos_522" receiveEvent="mos_523"/>
+        <message xmi:type="uml:Message" xmi:id="msg_524" name="capturar calificación/observaciones y clic en &quot;Evaluar&quot;" messageSort="synchCall" sendEvent="mos_525" receiveEvent="mos_526"/>
+        <message xmi:type="uml:Message" xmi:id="msg_527" name="evaluateReport(actionEvent)" messageSort="synchCall" sendEvent="mos_528" receiveEvent="mos_529"/>
+        <message xmi:type="uml:Message" xmi:id="msg_534" name="showAlert(&quot;Sin selección&quot;, &quot;Seleccione un reporte.&quot;, WARNING)" messageSort="synchCall" sendEvent="mos_535" receiveEvent="mos_536"/>
+        <message xmi:type="uml:Message" xmi:id="msg_537" name="muestra diálogo" messageSort="reply" sendEvent="mos_538" receiveEvent="mos_539"/>
+        <message xmi:type="uml:Message" xmi:id="msg_543" name="showAlert(&quot;Observación requerida&quot;, &quot;Ingrese una observación.&quot;, WARNING)" messageSort="synchCall" sendEvent="mos_544" receiveEvent="mos_545"/>
+        <message xmi:type="uml:Message" xmi:id="msg_546" name="muestra diálogo" messageSort="reply" sendEvent="mos_547" receiveEvent="mos_548"/>
+        <message xmi:type="uml:Message" xmi:id="msg_552" name="showAlert(&quot;Calificación requerida&quot;, &quot;Ingrese una calificación válida (0 a 10).&quot;, WARNING)" messageSort="synchCall" sendEvent="mos_553" receiveEvent="mos_554"/>
+        <message xmi:type="uml:Message" xmi:id="msg_555" name="muestra diálogo" messageSort="reply" sendEvent="mos_556" receiveEvent="mos_557"/>
+        <message xmi:type="uml:Message" xmi:id="msg_561" name="updateReportStatus(&quot;Evaluado&quot;)" messageSort="synchCall" sendEvent="mos_562" receiveEvent="mos_563"/>
+        <message xmi:type="uml:Message" xmi:id="msg_564" name="save(reportEvaluation)" messageSort="synchCall" sendEvent="mos_565" receiveEvent="mos_566"/>
+        <message xmi:type="uml:Message" xmi:id="msg_567" name="INSERT INTO evaluacion_reporte (...)" messageSort="synchCall" sendEvent="mos_568" receiveEvent="mos_569"/>
+        <message xmi:type="uml:Message" xmi:id="msg_570" name="id generado" messageSort="reply" sendEvent="mos_571" receiveEvent="mos_572"/>
+        <message xmi:type="uml:Message" xmi:id="msg_573" name="int" messageSort="reply" sendEvent="mos_574" receiveEvent="mos_575"/>
+        <message xmi:type="uml:Message" xmi:id="msg_576" name="updateStatus(reportId, statusUpdate)" messageSort="synchCall" sendEvent="mos_577" receiveEvent="mos_578"/>
+        <message xmi:type="uml:Message" xmi:id="msg_579" name="UPDATE reporte SET estado = ?, observaciones = ?, fecha_revision = ?" messageSort="synchCall" sendEvent="mos_580" receiveEvent="mos_581"/>
+        <message xmi:type="uml:Message" xmi:id="msg_582" name="filas afectadas" messageSort="reply" sendEvent="mos_583" receiveEvent="mos_584"/>
+        <message xmi:type="uml:Message" xmi:id="msg_585" name="boolean" messageSort="reply" sendEvent="mos_586" receiveEvent="mos_587"/>
+        <message xmi:type="uml:Message" xmi:id="msg_592" name="showAlert(&quot;Estado actualizado&quot;, &quot;El reporte fue evaluado.&quot;, INFORMATION)" messageSort="synchCall" sendEvent="mos_593" receiveEvent="mos_594"/>
+        <message xmi:type="uml:Message" xmi:id="msg_595" name="muestra diálogo" messageSort="reply" sendEvent="mos_596" receiveEvent="mos_597"/>
+        <message xmi:type="uml:Message" xmi:id="msg_602" name="getAveragePracticeGrade(internId)" messageSort="synchCall" sendEvent="mos_603" receiveEvent="mos_604"/>
+        <message xmi:type="uml:Message" xmi:id="msg_605" name="SELECT AVG(calificacion)" messageSort="synchCall" sendEvent="mos_606" receiveEvent="mos_607"/>
+        <message xmi:type="uml:Message" xmi:id="msg_608" name="promedio" messageSort="reply" sendEvent="mos_609" receiveEvent="mos_610"/>
+        <message xmi:type="uml:Message" xmi:id="msg_611" name="Double" messageSort="reply" sendEvent="mos_612" receiveEvent="mos_613"/>
+        <message xmi:type="uml:Message" xmi:id="msg_614" name="concludeActiveByIntern(internId, grade)" messageSort="synchCall" sendEvent="mos_615" receiveEvent="mos_616"/>
+        <message xmi:type="uml:Message" xmi:id="msg_617" name="UPDATE practica SET estado=&#x27;Concluida&#x27;, calificacion=?" messageSort="synchCall" sendEvent="mos_618" receiveEvent="mos_619"/>
+        <message xmi:type="uml:Message" xmi:id="msg_620" name="filas afectadas" messageSort="reply" sendEvent="mos_621" receiveEvent="mos_622"/>
+        <message xmi:type="uml:Message" xmi:id="msg_623" name="boolean" messageSort="reply" sendEvent="mos_624" receiveEvent="mos_625"/>
+        <message xmi:type="uml:Message" xmi:id="msg_626" name="showAlert(&quot;Práctica concluida&quot;, &quot;Se cumplieron los requisitos.&quot;, INFORMATION)" messageSort="synchCall" sendEvent="mos_627" receiveEvent="mos_628"/>
+        <message xmi:type="uml:Message" xmi:id="msg_629" name="muestra diálogo" messageSort="reply" sendEvent="mos_630" receiveEvent="mos_631"/>
+        <message xmi:type="uml:Message" xmi:id="msg_635" name="showAlert(&quot;Servicio no disponible&quot;, &quot;No se pudo actualizar el reporte. Intente más tarde.&quot;, ERROR)" messageSort="synchCall" sendEvent="mos_636" receiveEvent="mos_637"/>
+        <message xmi:type="uml:Message" xmi:id="msg_638" name="muestra diálogo" messageSort="reply" sendEvent="mos_639" receiveEvent="mos_640"/>
+      </ownedBehavior>
+    </packagedElement>
+  </uml:Model>
+</xmi:XMI>

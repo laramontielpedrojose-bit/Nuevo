@@ -1,0 +1,82 @@
+@startuml CU-17_SubirFormatosIniciales
+!include _comun.puml
+title CU-17 Subir Formatos Iniciales
+
+actor Practicante
+boundary ":GUIUploadInitialDocuments" as UI
+participant ":UploadInitialDocumentsController" as C
+participant "initialFormat : InitialFormat" as DTO
+participant ":InitialFormatDAO" as DAO
+database "BD" as BD
+
+== Recuperar y mostrar formatos pendientes ==
+Practicante -> UI : abrir "Subir Formatos Iniciales"
+activate UI
+UI -> C : initialize()
+activate C
+C -> DAO : findPendingByIntern(currentUserId)
+activate DAO
+DAO -> BD : SELECT * FROM formato_inicial WHERE estado = 'Pendiente'
+activate BD
+BD --> DAO : ResultSet
+deactivate BD
+DAO -> DAO : mapToInitialFormat(resultSet) : List<InitialFormat>
+DAO --> C : List<InitialFormat>
+deactivate DAO
+C -> UI : comboBoxDocumentType.getItems().add(formatType)
+UI --> Practicante : muestra formatos pendientes
+
+== Subir formato ==
+Practicante -> UI : seleccionar/arrastrar PDF
+UI -> C : processSelectedFile(file)
+
+alt [!isPDF(file)]
+    C -> UI : showError("El archivo seleccionado no es un PDF válido")
+    UI --> Practicante : muestra mensaje
+else [PDF válido]
+    C -> UI : habilitar "Subir"
+    UI --> Practicante : archivo aceptado
+    Practicante -> UI : seleccionar tipo y clic en "Subir"
+    UI -> C : saveDocument(actionEvent)
+
+    alt [tipo no seleccionado / sin archivo]
+        C -> UI : showAlert("Advertencia", "Seleccione tipo y archivo.", WARNING)
+        UI --> Practicante : muestra diálogo
+    else [datos completos]
+        create DTO
+        C -> DTO : new InitialFormat()
+        activate DTO
+        C -> DTO : setFormatType(comboBoxDocumentType.getValue())
+        C -> DTO : setFilePath(relativeFolder)
+        C -> DTO : setIdProject(idProject)
+        C -> DTO : setIdInitialFormat(idInitialFormat)
+        C -> DTO : setSubmissionDate(LocalDate.now())
+
+        C -> DAO : updateStatus(initialFormat)
+        activate DAO
+        DAO -> DTO : getIdInitialFormat() / getFilePath() / getSubmissionDate()
+        DTO --> DAO : valores
+        DAO -> BD : UPDATE formato_inicial SET estado='Entregado', ruta=?, fecha=?
+        activate BD
+        BD --> DAO : filas afectadas
+        deactivate BD
+        DAO --> C : int (filas > 0)
+        deactivate DAO
+        deactivate DTO
+
+        alt [updateSucceeded]
+            C -> C : saveFile(selectedFile, relativeFolder, newFileName)
+            C -> UI : showAlert("Éxito", "Documento guardado.", INFORMATION)
+            UI --> Practicante : muestra diálogo
+        else [ValidationException]
+            C -> UI : showError("Error al guardar el documento, datos no válidos")
+            UI --> Practicante : muestra mensaje
+        else [ServiceException]
+            C -> UI : showError("Error al guardar el documento, Servicio no disponible")
+            UI --> Practicante : muestra mensaje
+        end
+    end
+end
+deactivate C
+deactivate UI
+@enduml

@@ -1,0 +1,114 @@
+@startuml CU-16_EvaluarReporte
+!include _comun.puml
+title CU-16 Evaluar Reporte
+
+actor Profesor
+boundary ":GUIEvaluateReport" as UI
+participant ":EvaluateReportController" as C
+participant ":ProjectDAO" as PRDAO
+participant ":InternDAO" as IDAO
+participant ":ReportDAO" as RDAO
+participant ":ReportEvaluationDAO" as REDAO
+participant ":PracticeDAO" as PDAO
+database "BD" as BD
+
+== Recuperar y mostrar proyectos / practicantes / reportes ==
+Profesor -> UI : abrir "Evaluar Reportes"
+activate UI
+UI -> C : initialize()
+activate C
+C -> PRDAO : findAll()
+activate PRDAO
+PRDAO -> BD : SELECT proyectos
+BD --> PRDAO : ResultSet
+PRDAO -> PRDAO : mapToProject(rs) : List<Project>
+PRDAO --> C : List<Project>
+deactivate PRDAO
+C -> UI : projectComboBox.setItems(List<Project>)
+UI --> Profesor : muestra proyectos
+
+Profesor -> UI : seleccionar proyecto
+UI -> C : loadInternsForProject(project)
+C -> IDAO : findByProject(project.getIdProject())
+activate IDAO
+IDAO -> BD : SELECT practicantes del proyecto
+BD --> IDAO : ResultSet
+IDAO -> IDAO : mapToIntern(rs) : List<Intern>
+IDAO --> C : List<Intern>
+deactivate IDAO
+C -> UI : internComboBox.setItems(List<Intern>)
+UI --> Profesor : muestra practicantes
+
+Profesor -> UI : seleccionar practicante
+UI -> C : loadReportsForIntern(intern)
+C -> RDAO : getByInternAndProject(intern.getId(), idProject)
+activate RDAO
+RDAO -> BD : SELECT reportes
+BD --> RDAO : ResultSet
+RDAO -> RDAO : mapToReport(rs) : List<Report>
+RDAO --> C : List<Report>
+deactivate RDAO
+C -> UI : reportsTableView.setItems(List<Report>)
+UI --> Profesor : muestra reportes del practicante
+
+== Evaluar reporte ==
+Profesor -> UI : capturar calificación/observaciones y clic en "Evaluar"
+UI -> C : evaluateReport(actionEvent)
+
+alt [selectedReport == null]
+    C -> UI : showAlert("Sin selección", "Seleccione un reporte.", WARNING)
+    UI --> Profesor : muestra diálogo
+else [observación vacía]
+    C -> UI : showAlert("Observación requerida", "Ingrese una observación.", WARNING)
+    UI --> Profesor : muestra diálogo
+else [parseGrade(grade) == null]
+    C -> UI : showAlert("Calificación requerida", "Ingrese una calificación válida (0 a 10).", WARNING)
+    UI --> Profesor : muestra diálogo
+else [datos válidos]
+    C -> C : updateReportStatus("Evaluado")
+    C -> REDAO : save(reportEvaluation)
+    activate REDAO
+    REDAO -> BD : INSERT INTO evaluacion_reporte (...)
+    activate BD
+    BD --> REDAO : id generado
+    deactivate BD
+    REDAO --> C : int
+    deactivate REDAO
+
+    C -> RDAO : updateStatus(reportId, statusUpdate)
+    activate RDAO
+    RDAO -> BD : UPDATE reporte SET estado = ?, observaciones = ?, fecha_revision = ?
+    activate BD
+    BD --> RDAO : filas afectadas
+    deactivate BD
+    RDAO --> C : boolean
+    deactivate RDAO
+
+    alt [updated]
+        C -> UI : showAlert("Estado actualizado", "El reporte fue evaluado.", INFORMATION)
+        UI --> Profesor : muestra diálogo
+
+        opt [isPracticeComplete]
+            C -> REDAO : getAveragePracticeGrade(internId)
+            activate REDAO
+            REDAO -> BD : SELECT AVG(calificacion)
+            BD --> REDAO : promedio
+            REDAO --> C : Double
+            deactivate REDAO
+            C -> PDAO : concludeActiveByIntern(internId, grade)
+            activate PDAO
+            PDAO -> BD : UPDATE practica SET estado='Concluida', calificacion=?
+            BD --> PDAO : filas afectadas
+            PDAO --> C : boolean
+            deactivate PDAO
+            C -> UI : showAlert("Práctica concluida", "Se cumplieron los requisitos.", INFORMATION)
+            UI --> Profesor : muestra diálogo
+        end
+    else [ServiceException]
+        C -> UI : showAlert("Servicio no disponible", "No se pudo actualizar el reporte. Intente más tarde.", ERROR)
+        UI --> Profesor : muestra diálogo
+    end
+end
+deactivate C
+deactivate UI
+@enduml

@@ -1,0 +1,79 @@
+@startuml CU-24_RegistrarExperienciaEducativa
+!include _comun.puml
+title CU-24 Registrar Experiencia Educativa
+
+actor Coordinador
+boundary ":GUIAddEducationalExperience" as UI
+participant ":AddEducationalExperienceController" as C
+participant ":ProfessorDAO" as PDAO
+participant "educationalExperience :\nEducationalExperience" as DTO
+participant ":EducationalExperienceDAO" as EDAO
+database "BD" as BD
+
+== Recuperar y mostrar profesores ==
+Coordinador -> UI : abrir "Registrar Experiencia Educativa"
+activate UI
+UI -> C : initialize()
+activate C
+C -> PDAO : findActiveProfessors()
+activate PDAO
+PDAO -> BD : SELECT profesores activos
+activate BD
+BD --> PDAO : ResultSet
+deactivate BD
+PDAO -> PDAO : mapToProfessor(resultSet) : List<Professor>
+PDAO --> C : List<Professor>
+deactivate PDAO
+
+alt [!professorList.isEmpty()]
+    C -> UI : professorComboBox.getItems().setAll(List<Professor>)
+    UI --> Coordinador : muestra formulario con profesores
+else [lista vacía]
+    C -> UI : showAlert("Sin profesores disponibles", "No hay profesores activos.", WARNING)
+    UI --> Coordinador : muestra diálogo
+end
+
+== Registrar experiencia educativa ==
+Coordinador -> UI : capturar (nrc, nombre, profesor) y clic en "Registrar"
+UI -> C : registerEducationalExperience(actionEvent)
+
+alt [campos incompletos]
+    C -> UI : showAlert("Campos incompletos", "Complete todos los campos.", WARNING)
+    UI --> Coordinador : muestra diálogo
+else [datos válidos]
+    create DTO
+    C -> DTO : new EducationalExperience()
+    activate DTO
+    C -> DTO : setNrc(nrcTextField.getText())
+    C -> DTO : setName(nameTextField.getText())
+    C -> DTO : setIdProfessor(professorComboBox.getValue().getId())
+
+    C -> EDAO : save(educationalExperience)
+    activate EDAO
+    EDAO -> DTO : getNrc() / getName() / getIdProfessor()
+    DTO --> EDAO : valores
+    EDAO -> BD : INSERT INTO experiencia_educativa (...)
+    activate BD
+    BD --> EDAO : filas afectadas
+    deactivate BD
+    EDAO --> C : boolean
+    deactivate EDAO
+    deactivate DTO
+
+    alt [guardado]
+        C -> UI : showAlert("Éxito", "Experiencia educativa registrada.", INFORMATION)
+        UI --> Coordinador : muestra diálogo
+    else [DuplicateEntryException]
+        C -> UI : showAlert("NRC duplicado", "Ya existe una EE con ese NRC.", WARNING)
+        UI --> Coordinador : muestra diálogo
+    else [ValidationException]
+        C -> UI : showAlert("Error de validación", validationException.getMessage(), ERROR)
+        UI --> Coordinador : muestra diálogo
+    else [ServiceException]
+        C -> UI : showAlert("Servicio no disponible", "Intente más tarde.", ERROR)
+        UI --> Coordinador : muestra diálogo
+    end
+end
+deactivate C
+deactivate UI
+@enduml

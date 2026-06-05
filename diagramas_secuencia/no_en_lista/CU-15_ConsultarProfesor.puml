@@ -1,0 +1,37 @@
+@startuml CU-15_ConsultarProfesor
+!include _comun.puml
+title CU-15 Consultar Profesor
+
+actor Coordinador
+boundary ":GUIConsultProfessor" as UI
+participant ":ConsultProfessorController" as C
+participant ":ProfessorDAO" as DAO
+database "BD" as BD
+
+Coordinador -> UI : seleccionar "Consultar Profesor"
+activate UI
+UI -> C : initialize()
+activate C
+C -> DAO : findAll()
+activate DAO
+DAO -> BD : SELECT * FROM profesor JOIN usuario
+activate BD
+BD --> DAO : ResultSet
+deactivate BD
+DAO -> DAO : mapToProfessor(resultSet) : List<Professor>
+DAO --> C : List<Professor>
+deactivate DAO
+
+alt [!professors.isEmpty()]
+    C -> UI : professorsTableView.setItems(List<Professor>)
+    UI --> Coordinador : muestra profesores (matricula, nombre, academica, estado)
+else [lista vacía]
+    C -> UI : showAlert("Advertencia", "No se encontraron profesores.", WARNING)
+    UI --> Coordinador : muestra diálogo
+else [ServiceException]
+    C -> UI : showAlert("Error", "Servicio no disponible, intente más tarde.", ERROR)
+    UI --> Coordinador : muestra diálogo
+end
+deactivate C
+deactivate UI
+@enduml

@@ -1,0 +1,107 @@
+@startuml CU-21_GenerarAutoevaluacion
+!include _comun.puml
+title CU-21 Generar Autoevaluacion
+
+actor Practicante
+boundary ":GUIGenerateSelfEvaluation" as UI
+participant ":GenerateSelfEvaluationController" as C
+participant ":InternDAO" as IDAO
+participant ":AssignmentDAO" as ASDAO
+participant ":ProjectDAO" as PRDAO
+participant ":LinkedOrganizationDAO" as ODAO
+participant "selfEvaluation :\nSelfEvaluation" as DTO
+participant ":SelfEvaluationDAO" as DAO
+participant ":SelfEvaluationGenerator" as GEN
+database "BD" as BD
+
+== Recuperar y mostrar datos del practicante ==
+Practicante -> UI : abrir "Generar Autoevaluación"
+activate UI
+UI -> C : initialize()
+activate C
+C -> IDAO : findById(internId)
+activate IDAO
+IDAO -> BD : SELECT practicante
+BD --> IDAO : ResultSet
+IDAO -> IDAO : mapToIntern(rs) : Intern
+IDAO --> C : Intern
+deactivate IDAO
+C -> ASDAO : getActiveByIdIntern(internId)
+activate ASDAO
+ASDAO -> BD : SELECT asignacion activa
+BD --> ASDAO : Assignment
+ASDAO --> C : Assignment
+deactivate ASDAO
+C -> PRDAO : findById(activeAssignment.getIdProject())
+activate PRDAO
+PRDAO -> BD : SELECT proyecto
+BD --> PRDAO : Project
+PRDAO --> C : Project
+deactivate PRDAO
+C -> ODAO : findById(currentProject.getIdOrganization())
+activate ODAO
+ODAO -> BD : SELECT organizacion
+BD --> ODAO : LinkedOrganization
+ODAO --> C : LinkedOrganization
+deactivate ODAO
+C -> UI : idTextField.setText(matricula) / departmentTextField.setText(sector)
+UI --> Practicante : muestra formulario con sus datos
+
+== Generar autoevaluación ==
+Practicante -> UI : responder enunciados y clic en "Generar"
+UI -> C : generateDocument(actionEvent)
+
+alt [toggleGroup.getSelectedToggle() == null]
+    C -> UI : showAlert("Cuestionario incompleto", "Responda todos los enunciados.", WARNING)
+    UI --> Practicante : muestra diálogo
+else [completo]
+    create DTO
+    C -> DTO : new SelfEvaluation()
+    activate DTO
+    C -> DTO : setIdIntern(currentIntern.getId())
+    C -> DTO : setIdProject(currentProject.getIdProject())
+    C -> DTO : setPeriod(buildAcademicPeriod())
+    C -> DTO : setStatement01..10(getSelectedValue(group))
+    C -> DTO : setFinalScore(calculateFinalScore(selfEvaluation))
+    C -> DTO : setPlaceAndDate(placeAndDateTextField.getText())
+    C -> DTO : setStatus("Generada")
+
+    C -> DAO : save(selfEvaluation)
+    activate DAO
+    DAO -> DTO : getIdIntern() / getStatement01() / getFinalScore() / ...
+    DTO --> DAO : valores
+    DAO -> BD : INSERT INTO autoevaluacion (...)
+    activate BD
+    BD --> DAO : id generado
+    deactivate BD
+    DAO --> C : int
+    deactivate DAO
+
+    alt [guardado]
+        C -> GEN : generate(selfEvaluation, generationContext)
+        activate GEN
+        GEN --> C : String (internalPath)
+        deactivate GEN
+        C -> DAO : updateDocumentPath(selfEvaluation.getIdSelfEvalation(), internalPath)
+        activate DAO
+        DAO -> BD : UPDATE autoevaluacion SET ruta = ?
+        BD --> DAO : boolean
+        DAO --> C : boolean
+        deactivate DAO
+        C -> UI : showAlert("Documento generado", "La autoevaluación se generó correctamente.", INFORMATION)
+        UI --> Practicante : muestra diálogo
+    else [ValidationException]
+        C -> UI : showAlert("Error de validación", validationException.getMessage(), ERROR)
+        UI --> Practicante : muestra diálogo
+    else [ServiceException]
+        C -> UI : showAlert("Servicio no disponible", "Intente más tarde.", ERROR)
+        UI --> Practicante : muestra diálogo
+    else [IOException]
+        C -> UI : showAlert("Error al generar archivo", "No se pudo crear el documento.", ERROR)
+        UI --> Practicante : muestra diálogo
+    end
+    deactivate DTO
+end
+deactivate C
+deactivate UI
+@enduml

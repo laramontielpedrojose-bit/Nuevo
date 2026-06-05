@@ -1,0 +1,76 @@
+@startuml CU-14_RegistrarPracticante
+!include _comun.puml
+title CU-14 Registrar Practicante
+
+actor Coordinador
+boundary ":GUIAddIntern" as UI
+participant ":AddInternController" as C
+participant "intern : Intern" as DTO
+participant ":InternDAO" as DAO
+database "BD" as BD
+
+Coordinador -> UI : llenar formulario y clic en "Registrar"
+activate UI
+UI -> C : registerIntern(actionEvent)
+activate C
+
+alt [hasEmptyFields()]
+    C -> UI : showAlert("Campos vacíos", "Por favor complete todos los campos obligatorios.", WARNING)
+    UI --> Coordinador : muestra diálogo
+else [!isValidEmail(correo)]
+    C -> UI : showAlert("Correo inválido", "Ingrese un correo electrónico válido.", WARNING)
+    UI --> Coordinador : muestra diálogo
+else [isPasswordInvalid]
+    C -> UI : showAlert("Contraseña no válida", passwordValidationMessage, WARNING)
+    UI --> Coordinador : muestra diálogo
+else [!isPasswordMatching()]
+    C -> UI : showAlert("Contraseñas no coinciden", "Verifique la contraseña.", WARNING)
+    UI --> Coordinador : muestra diálogo
+else [datos válidos]
+    create DTO
+    C -> DTO : new Intern()
+    activate DTO
+    C -> DTO : setMatricula(idTextField.getText())
+    C -> DTO : setFirstName(firstNameTextField.getText())
+    C -> DTO : setLastName(lastNameTextField.getText())
+    C -> DTO : setSecondLastName(secondLastNameTextField.getText())
+    C -> DTO : setEmail(emailTextField.getText())
+    C -> DTO : setPassword(BCrypt.hashpw(pw, gensalt()))
+    C -> DTO : setCredits(Integer.parseInt(creditTextField.getText()))
+    C -> DTO : setStatus("Activo")
+    C -> DTO : setRole("Practicante")
+
+    C -> DAO : saveIntern(intern)
+    activate DAO
+    DAO -> DTO : getMatricula() / getFirstName() / getEmail() / ...
+    DTO --> DAO : valores
+    DAO -> BD : INSERT INTO usuario (...)
+    activate BD
+    BD --> DAO : id generado
+    deactivate BD
+    DAO -> BD : INSERT INTO practicante (id_usuario, creditos)
+    activate BD
+    BD --> DAO : filas afectadas
+    deactivate BD
+    DAO --> C : boolean
+    deactivate DAO
+
+    alt [guardado]
+        C -> DTO : clear()
+        C -> UI : showAlert("Éxito", "Practicante registrado exitosamente.", INFORMATION)
+        UI --> Coordinador : muestra diálogo
+    else [DuplicateEntryException]
+        C -> UI : showAlert("Registro duplicado", duplicateMessage, WARNING)
+        UI --> Coordinador : muestra diálogo
+    else [ValidationException]
+        C -> UI : showAlert("Error de validación", validationException.getMessage(), ERROR)
+        UI --> Coordinador : muestra diálogo
+    else [ServiceException]
+        C -> UI : showAlert("Servicio no disponible", "No se pudo conectar al servicio. Intente más tarde.", ERROR)
+        UI --> Coordinador : muestra diálogo
+    end
+    deactivate DTO
+end
+deactivate C
+deactivate UI
+@enduml

@@ -1,0 +1,108 @@
+@startuml CU-25_GestionarActividades
+!include _comun.puml
+title CU-25 Gestionar Actividades
+
+actor Profesor
+boundary ":GUIManageActivities" as UI
+participant ":ManageActivitiesController" as C
+participant ":ActivityDAO" as ADAO
+participant "prorroga : Prorroga" as DTO
+participant ":ProrrogaDAO" as PRDAO
+database "BD" as BD
+
+== Recuperar y mostrar actividades ==
+Profesor -> UI : seleccionar proyecto
+activate UI
+UI -> C : refreshActivities(idProject)
+activate C
+C -> ADAO : findByProject(idProject)
+activate ADAO
+ADAO -> BD : SELECT * FROM actividad WHERE id_proyecto = ?
+activate BD
+BD --> ADAO : ResultSet
+deactivate BD
+ADAO -> ADAO : mapToActivity(resultSet) : List<Activity>
+ADAO --> C : List<Activity>
+deactivate ADAO
+C -> UI : activitiesTableView.setItems(List<Activity>)
+UI --> Profesor : muestra actividades del proyecto
+
+alt [accion = Eliminar]
+    Profesor -> UI : clic en "Eliminar"
+    UI -> C : deleteActivity(actionEvent)
+    alt [selectedActivity == null]
+        C -> UI : showAlert("Sin selección", "Seleccione una actividad.", WARNING)
+        UI --> Profesor : muestra diálogo
+    else [seleccionada]
+        C -> ADAO : delete(selectedActivity.getIdActivity())
+        activate ADAO
+        ADAO -> BD : DELETE FROM actividad WHERE id_actividad = ?
+        activate BD
+        BD --> ADAO : filas afectadas
+        deactivate BD
+        ADAO --> C : boolean
+        deactivate ADAO
+        alt [eliminada]
+            C -> ADAO : findByProject(idProject)
+            activate ADAO
+            ADAO -> BD : SELECT actividades
+            BD --> ADAO : ResultSet
+            ADAO -> ADAO : mapToActivity(rs) : List<Activity>
+            ADAO --> C : List<Activity>
+            deactivate ADAO
+            C -> UI : activitiesTableView.setItems(...) + showAlert("Actividad eliminada", "Se eliminó correctamente.", INFORMATION)
+            UI --> Profesor : muestra actividades y diálogo
+        else [ServiceException]
+            C -> UI : showAlert("Servicio no disponible", "Intente más tarde.", ERROR)
+            UI --> Profesor : muestra diálogo
+        end
+    end
+
+else [accion = Otorgar Prórroga]
+    Profesor -> UI : clic en "Otorgar Prórroga"
+    UI -> C : grantExtension(actionEvent)
+    C -> UI : Dialog(newDatePicker, motivoField)
+    UI --> Profesor : muestra diálogo
+    Profesor -> UI : capturar datos y confirmar
+    UI --> C : Optional<ButtonType>
+
+    create DTO
+    C -> DTO : new Prorroga()
+    activate DTO
+    C -> DTO : setIdActivity(selectedActivity.getIdActivity())
+    C -> DTO : setOriginalEndDate(selectedActivity.getEndDate())
+    C -> DTO : setNewEndDate(newDatePicker.getValue())
+    C -> DTO : setMotivo(motivoField.getText())
+
+    alt [newEndDate == null]
+        C -> UI : showAlert("Fecha requerida", "Ingrese la nueva fecha.", WARNING)
+        UI --> Profesor : muestra diálogo
+    else [motivo en blanco]
+        C -> UI : showAlert("Motivo requerido", "Ingrese el motivo.", WARNING)
+        UI --> Profesor : muestra diálogo
+    else [fecha fuera de rango]
+        C -> UI : showAlert("Fecha fuera del rango del proyecto", "Ajuste la fecha.", WARNING)
+        UI --> Profesor : muestra diálogo
+    else [válido]
+        C -> PRDAO : save(prorroga)
+        activate PRDAO
+        PRDAO -> DTO : getIdActivity() / getNewEndDate() / getMotivo()
+        DTO --> PRDAO : valores
+        PRDAO -> BD : INSERT INTO prorroga (...)
+        PRDAO -> BD : UPDATE actividad SET fecha_fin = ?
+        activate BD
+        BD --> PRDAO : filas afectadas
+        deactivate BD
+        PRDAO --> C : int
+        deactivate PRDAO
+        C -> UI : showAlert("Prórroga guardada", "La prórroga fue registrada.", INFORMATION)
+        UI --> Profesor : muestra diálogo
+    end
+    deactivate DTO
+
+else [accion = Agregar / Actualizar]
+    note over UI, C : Agregar abre GUIAddActivity;\nActualizar dispara CU-26 Actualizar Actividad
+end
+deactivate C
+deactivate UI
+@enduml

@@ -1,0 +1,108 @@
+@startuml CU-19_GenerarReporte
+!include _comun.puml
+title CU-19 Generar Reporte
+
+actor Practicante
+boundary ":GUIGenerateReport" as UI
+participant ":GenerateReportController" as C
+participant ":InternContextLoader" as CTX
+participant "report : MonthlyReport" as DTO
+participant ":ReportDAO" as RDAO
+participant ":MonthlyReportDAO" as MDAO
+participant ":MonthlyReportGenerator" as GEN
+database "BD" as BD
+
+== Recuperar y mostrar contexto / actividades ==
+Practicante -> UI : abrir "Generar Reporte"
+activate UI
+UI -> C : initialize()
+activate C
+C -> CTX : load(internId)
+activate CTX
+CTX -> BD : SELECT practicante, proyecto, organizacion, actividades
+activate BD
+BD --> CTX : ResultSet
+deactivate BD
+CTX -> CTX : map : InternContext(intern, project, activities)
+CTX --> C : InternContext
+deactivate CTX
+C -> UI : projectActivitiesTable.setItems(context.getActivities())
+UI --> Practicante : muestra contexto y actividades del proyecto
+
+== Generar reporte ==
+Practicante -> UI : elegir tipo, agregar actividades y clic en "Generar"
+UI -> C : generateReport(actionEvent)
+
+alt [reportType == null]
+    C -> UI : showAlert("Tipo de reporte", "Seleccione el tipo de reporte.", WARNING)
+    UI --> Practicante : muestra diálogo
+else [reportActivities.isEmpty()]
+    C -> UI : showAlert("Actividades requeridas", "Agregue al menos una actividad.", WARNING)
+    UI --> Practicante : muestra diálogo
+else [datos completos]
+    C -> RDAO : existsMonthlyByInternAndPeriod(idIntern, month, year)
+    activate RDAO
+    RDAO -> BD : SELECT COUNT(*) FROM reporte
+    BD --> RDAO : boolean
+    RDAO --> C : boolean
+    deactivate RDAO
+
+    alt [ya existe]
+        C -> UI : showAlert("Reporte duplicado", "Ya existe un reporte para ese período.", WARNING)
+        UI --> Practicante : muestra diálogo
+    else [válido]
+        create DTO
+        C -> DTO : new MonthlyReport()
+        activate DTO
+        C -> DTO : setIdIntern(currentIntern.getId())
+        C -> DTO : setIdProject(currentProject.getIdProject())
+        C -> DTO : setIdProfessor(currentProject.getIdProfessor())
+        C -> DTO : setReportType(reportType)
+        C -> DTO : setPeriod(period)
+        C -> DTO : setStatus("Pendiente")
+        C -> DTO : setReportedHours(reportedHoursCount)
+        C -> DTO : setReportNumber(reportNumber)
+        C -> DTO : setSumissionDate(new Date())
+
+        C -> MDAO : save(report)
+        activate MDAO
+        MDAO -> DTO : getIdIntern() / getReportType() / getPeriod() / ...
+        DTO --> MDAO : valores
+        MDAO -> BD : INSERT INTO reporte (...)
+        activate BD
+        BD --> MDAO : id generado
+        deactivate BD
+        MDAO --> C : int
+        deactivate MDAO
+
+        C -> GEN : generate(report, generationContext, reportContent)
+        activate GEN
+        GEN --> C : String (internalPath)
+        deactivate GEN
+
+        C -> MDAO : updateDocumentPath(report.getIdReport(), internalPath)
+        activate MDAO
+        MDAO -> BD : UPDATE reporte SET ruta = ?
+        BD --> MDAO : boolean
+        MDAO --> C : boolean
+        deactivate MDAO
+
+        alt [generado]
+            C -> UI : showAlert("Reporte generado", "El reporte se generó correctamente.", INFORMATION)
+            UI --> Practicante : muestra diálogo
+        else [ValidationException]
+            C -> UI : showAlert("Error de validación", validationException.getMessage(), ERROR)
+            UI --> Practicante : muestra diálogo
+        else [ServiceException]
+            C -> UI : showAlert("Servicio no disponible", "Intente más tarde.", ERROR)
+            UI --> Practicante : muestra diálogo
+        else [IOException]
+            C -> UI : showAlert("Error al generar PDF", "No se pudo crear el documento.", ERROR)
+            UI --> Practicante : muestra diálogo
+        end
+        deactivate DTO
+    end
+end
+deactivate C
+deactivate UI
+@enduml

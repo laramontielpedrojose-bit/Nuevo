@@ -1,0 +1,135 @@
+@startuml CU-18_SolicitarProyecto
+!include _comun.puml
+title CU-18 Solicitar Proyecto
+
+actor Practicante
+boundary ":GUIRequestProject" as UI
+boundary ":GUIViewProjectSelection" as UI2
+participant ":RequestProjectController" as RC
+participant ":ViewProjectSelectionController" as VC
+participant ":PracticeDAO" as PDAO
+participant ":ApplicationDAO" as ADAO
+participant ":InternDAO" as IDAO
+participant "application : Application" as ADTO
+participant "projectApplication :\nProjectApplication" as PADTO
+participant ":ProjectApplicationDAO" as PADAO
+participant ":ProjectDAO" as PRDAO
+database "BD" as BD
+
+Practicante -> UI : abrir "Solicitar Proyecto"
+activate UI
+UI -> RC : verifyActiveInternProjectApplication()
+activate RC
+RC -> PDAO : hasConcludedPractice(currentUserId)
+activate PDAO
+PDAO -> BD : SELECT FROM practica WHERE estado='Concluida'
+BD --> PDAO : boolean
+PDAO --> RC : boolean
+RC -> PDAO : findActiveByIntern(currentUserId)
+PDAO -> BD : SELECT practica activa
+BD --> PDAO : ResultSet
+PDAO -> PDAO : mapToPractice(rs) : Practice
+PDAO --> RC : Practice
+deactivate PDAO
+RC -> ADAO : findActiveApplicationByIntern(currentUserId)
+activate ADAO
+ADAO -> BD : SELECT solicitud pendiente
+BD --> ADAO : Application
+ADAO --> RC : Application
+deactivate ADAO
+RC -> IDAO : findById(currentUserId)
+activate IDAO
+IDAO -> BD : SELECT creditos
+BD --> IDAO : Intern
+IDAO --> RC : Intern
+deactivate IDAO
+
+alt [hasConcluded]
+    RC -> UI : showAlert("Práctica concluida", "Ya concluyó una práctica profesional.", INFORMATION)
+    UI --> Practicante : muestra diálogo
+else [hasActivePractice]
+    RC -> UI : showAlert("Práctica activa", "Ya cuenta con una práctica activa.", WARNING)
+    UI --> Practicante : muestra diálogo
+else [hasPendingApplication]
+    RC -> UI : showAlert("Solicitud pendiente", "Ya cuenta con una solicitud pendiente.", WARNING)
+    UI --> Practicante : muestra diálogo
+else [!hasEnoughCredits]
+    RC -> UI : showAlert("Créditos insuficientes", "No cuenta con los créditos suficientes.", WARNING)
+    UI --> Practicante : muestra diálogo
+else [elegible]
+    RC -> PRDAO : findAllAvailable()
+    activate PRDAO
+    PRDAO -> BD : SELECT proyectos disponibles
+    BD --> PRDAO : ResultSet
+    PRDAO -> PRDAO : mapToProject(rs) : List<Project>
+    PRDAO --> RC : List<Project>
+    deactivate PRDAO
+    RC -> UI : availableTableView.setItems(List<Project>)
+    UI --> Practicante : muestra proyectos
+
+    Practicante -> UI : seleccionar 3 proyectos y "Continuar"
+    UI -> RC : projectSelectionListButton(actionEvent)
+
+    alt [selectedProjects.size() != 3]
+        RC -> UI : showAlert("Advertencia", "Debe seleccionar exactamente 3 proyectos.", WARNING)
+        UI --> Practicante : muestra diálogo
+    else [3 proyectos]
+        RC -> UI2 : openViewProjectSelection(selectedProjects)
+        deactivate RC
+        activate UI2
+        UI2 --> Practicante : muestra selección
+        Practicante -> UI2 : confirmar solicitud
+        UI2 -> VC : confirmRequest(actionEvent)
+        activate VC
+
+        create ADTO
+        VC -> ADTO : new Application()
+        activate ADTO
+        VC -> ADTO : setIdIntern(currentUserId)
+        VC -> ADTO : setApplicationDate(LocalDate.now())
+        VC -> ADTO : setStatus("Pendiente")
+        VC -> ADAO : create(application)
+        activate ADAO
+        ADAO -> ADTO : getIdIntern() / getApplicationDate() / getStatus()
+        ADTO --> ADAO : valores
+        ADAO -> BD : INSERT INTO solicitud (...)
+        activate BD
+        BD --> ADAO : id generado
+        deactivate BD
+        ADAO --> VC : int (idApplication)
+        deactivate ADAO
+        VC -> ADTO : setIdApplication(idApplication)
+
+        loop por cada proyecto seleccionado
+            create PADTO
+            VC -> PADTO : new ProjectApplication()
+            activate PADTO
+            VC -> PADTO : setIdApplication(idApplication)
+            VC -> PADTO : setIdProject(project.getIdProject())
+            VC -> PADAO : create(projectApplication)
+            activate PADAO
+            PADAO -> PADTO : getIdApplication() / getIdProject()
+            PADTO --> PADAO : valores
+            PADAO -> BD : INSERT INTO solicitud_proyecto (...)
+            activate BD
+            BD --> PADAO : boolean
+            deactivate BD
+            PADAO --> VC : boolean
+            deactivate PADAO
+            deactivate PADTO
+        end
+        deactivate ADTO
+
+        alt [registrada]
+            VC -> UI2 : showAlert("Éxito", "Solicitud registrada.", INFORMATION)
+            UI2 --> Practicante : muestra diálogo
+        else [ServiceException]
+            VC -> UI2 : showAlert("Error", "Servicio no disponible.", ERROR)
+            UI2 --> Practicante : muestra diálogo
+        end
+        deactivate VC
+        deactivate UI2
+    end
+end
+deactivate UI
+@enduml
