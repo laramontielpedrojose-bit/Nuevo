@@ -206,18 +206,11 @@ def parse(path):
 
 # ----------------------------- emision ------------------------------------
 
-def build(path):
-    pkg_name, parts, by_id, msgs, order, frags = parse(path)
+DATE = '2026-06-05 12:00:00'
+AUTHOR = 'EA'
 
-    PKGID = gid(newg())
-    MODELID = 'MX_' + gid(newg())
-    COLLABID = gid(newg())
-    INTID = gid(newg())
-    DIAGID = gid(newg())
-    DATE = '2026-06-05 12:00:00'
-    AUTHOR = 'EA'
 
-    # geometria: columnas de lifelines
+def _geometry(parts, order):
     STEP = 200
     LX = 40
     for i, p in enumerate(parts):
@@ -225,30 +218,21 @@ def build(path):
         p.width = 90 if p.is_actor else 100
         p.right = p.left + p.width
         p.center = p.left + p.width // 2
+    ymsg = lambda s: 130 + s * 40
+    bottom = ymsg(len(order) + 1) + 60
+    return ymsg, bottom
 
-    def ymsg(s):
-        return 130 + s * 40
 
-    nmsg = len(order)
-    bottom = ymsg(nmsg + 1) + 60
+def _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, pkgnum, loc, ymsg):
+    """Emite <UML:Package> ... </UML:Package> con Collaboration, Actores y Fragmentos.
+    'loc' es un asignador global de ea_localid (callable -> int unico)."""
+    pkg_name, parts, by_id, msgs, order, frags = parsed
+    for p in parts:           # localids globalmente unicos
+        p.localid = loc()
 
-    out = []
-    w = out.append
-    w('<?xml version="1.0" encoding="windows-1252"?>')
-    w('<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="%s">' % DATE)
-    w('\t<XMI.header>')
-    w('\t\t<XMI.documentation>')
-    w('\t\t\t<XMI.exporter>Enterprise Architect</XMI.exporter>')
-    w('\t\t\t<XMI.exporterVersion>2.5</XMI.exporterVersion>')
-    w('\t\t</XMI.documentation>')
-    w('\t</XMI.header>')
-    w('\t<XMI.content>')
-    w('\t\t<UML:Model name="EA Model" xmi.id="%s">' % MODELID)
-    w('\t\t\t<UML:Namespace.ownedElement>')
-    w('\t\t\t\t<UML:Class name="EARootClass" xmi.id="%s" isRoot="true" isLeaf="false" isAbstract="false"/>' % ROOT_ID)
     w('\t\t\t\t<UML:Package name="%s" xmi.id="%s" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">' % (esc(pkg_name), PKGID))
     w('\t\t\t\t\t<UML:ModelElement.taggedValue>')
-    for t, v in [('ea_package_id', '2'), ('created', DATE), ('modified', DATE),
+    for t, v in [('ea_package_id', str(pkgnum)), ('created', DATE), ('modified', DATE),
                  ('iscontrolled', 'FALSE'), ('isprotected', 'FALSE'),
                  ('version', '1.0'), ('author', AUTHOR), ('status', 'Proposed'),
                  ('ea_stype', 'Public')]:
@@ -309,11 +293,9 @@ def build(path):
         sx, ex = s.center, r.center
         y = -ymsg(seq)
         # El atributo name DEBE llevar la etiqueta completa CON parametros: EA
-        # muestra en el diagrama el 'name' del conector (no el 'mt'). La firma
-        # tambien se guarda en mt y los parametros en privatedata2 (paramsDlg).
+        # muestra en el diagrama el 'name' del conector (no el 'mt').
         params, retval = '', 'void'
         if '(' in full:
-            method = full.split('(', 1)[0].strip()
             inside = full[full.index('(') + 1: full.rindex(')')] if ')' in full else full.split('(', 1)[1]
             tail = (full[full.rindex(')') + 1:] if ')' in full else '').strip().lstrip(':').strip()
             disp_name = full
@@ -338,7 +320,7 @@ def build(path):
               ('seqno', str(seq)), ('headStyle', '0'), ('lineStyle', '0'),
               ('privatedata1', 'Synchronous'), ('privatedata2', pd2),
               ('privatedata3', pkind), ('privatedata4', '0'),
-              ('ea_localid', str(seq + 100)),
+              ('ea_localid', str(loc())),
               ('ea_sourceName', s.name), ('ea_targetName', r.name),
               ('ea_sourceType', 'Actor' if s.is_actor else 'Sequence'),
               ('ea_targetType', 'Actor' if r.is_actor else 'Sequence'),
@@ -386,10 +368,9 @@ def build(path):
         w('\t\t\t\t\t\t</UML:Actor>')
 
     # --- Fragmentos combinados (InteractionFragment) ---
-    for fi, fr in enumerate(frags):
-        fr['localid'] = 500 + fi
+    for fr in frags:
+        fr['localid'] = loc()
         ntype = OP_NTYPE.get(fr['op'], 0)
-        # particiones (operandos/guardas)
         partitions = ''
         for g in fr['operands']:
             partitions += '@PAR;Name=%s;Size=100;GUID=%s;@ENDPAR;' % (g, brace(newg()))
@@ -415,16 +396,16 @@ def build(path):
 
     w('\t\t\t\t\t</UML:Namespace.ownedElement>')
     w('\t\t\t\t</UML:Package>')
-    w('\t\t\t</UML:Namespace.ownedElement>')
-    w('\t\t</UML:Model>')
 
-    # --- Diagrama ---
+
+def _emit_diagram(w, parsed, PKGID, DIAGID, loc, ymsg, bottom):
+    pkg_name, parts, by_id, msgs, order, frags = parsed
     w('\t\t<UML:Diagram name="%s" xmi.id="%s" diagramType="SequenceDiagram" owner="%s" toolName="Enterprise Architect 2.5">'
       % (esc(pkg_name), DIAGID, PKGID))
     w('\t\t\t<UML:ModelElement.taggedValue>')
     for t, v in [('version', '1.0'), ('author', AUTHOR), ('created_date', DATE),
                  ('modified_date', DATE), ('package', PKGID), ('type', 'Sequence'),
-                 ('ea_localid', '1'),
+                 ('ea_localid', str(loc())),
                  ('EAStyle', 'ShowPrivate=1;ShowProtected=1;ShowPublic=1;Locked=0;Border=1;'
                              'HighlightForeign=1;PackageContents=1;SequenceNotes=0;Orientation=P;'
                              'Zoom=100;ConnectorNotation=UML 2.1;'),
@@ -433,14 +414,11 @@ def build(path):
     w('\t\t\t</UML:ModelElement.taggedValue>')
     w('\t\t\t<UML:Diagram.element>')
     seqn = 0
-    # lifelines y actores. Un objeto creado (lifecycle New) arranca su lifeline en
-    # el punto del mensaje «create» en lugar de en la parte superior.
     for p in parts:
         seqn += 1
         ptop = (ymsg(p.create_seq) - 18) if getattr(p, 'create_seq', None) else 50
         w('\t\t\t\t<UML:DiagramElement geometry="Left=%d;Top=%d;Right=%d;Bottom=%d;" subject="%s" seqno="%d" style="DUID=%s;"/>'
           % (p.left, ptop, p.right, bottom, gid(p.id), seqn, uuid.uuid4().hex[:8].upper()))
-    # fragmentos
     for fr in frags:
         seqn += 1
         seqs = fr['seqs'] or [1]
@@ -454,23 +432,105 @@ def build(path):
         fbot = ymsg(max(seqs)) + 16
         w('\t\t\t\t<UML:DiagramElement geometry="Left=%d;Top=%d;Right=%d;Bottom=%d;" subject="%s" seqno="%d" style="DUID=%s;"/>'
           % (fl, ftop, frr, fbot, gid(fr['id']), seqn, uuid.uuid4().hex[:8].upper()))
-    # conectores (mensajes) con geometria nula
     for mid in order:
         w('\t\t\t\t<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;Path=;" subject="%s" style=";Hidden=0;"/>'
           % gid(mid))
     w('\t\t\t</UML:Diagram.element>')
     w('\t\t</UML:Diagram>')
+
+
+def _header(w):
+    w('<?xml version="1.0" encoding="windows-1252"?>')
+    w('<XMI xmi.version="1.1" xmlns:UML="omg.org/UML1.3" timestamp="%s">' % DATE)
+    w('\t<XMI.header>')
+    w('\t\t<XMI.documentation>')
+    w('\t\t\t<XMI.exporter>Enterprise Architect</XMI.exporter>')
+    w('\t\t\t<XMI.exporterVersion>2.5</XMI.exporterVersion>')
+    w('\t\t</XMI.documentation>')
+    w('\t</XMI.header>')
+    w('\t<XMI.content>')
+
+
+def _footer(w):
     w('\t</XMI.content>')
     w('\t<XMI.difference/>')
     w('\t<XMI.extensions xmi.extender="Enterprise Architect 2.5"/>')
     w('</XMI>')
+
+
+def build(path):
+    """Un solo diagrama -> documento XMI nativo."""
+    parsed = parse(path)
+    pkg_name, parts, by_id, msgs, order, frags = parsed
+    ymsg, bottom = _geometry(parts, order)
+    PKGID, COLLABID, INTID, DIAGID = (gid(newg()) for _ in range(4))
+    MODELID = 'MX_' + gid(newg())
+    cnt = [1]
+    loc = lambda: (cnt.__setitem__(0, cnt[0] + 1) or cnt[0])
+    out = []; w = out.append
+    _header(w)
+    w('\t\t<UML:Model name="EA Model" xmi.id="%s">' % MODELID)
+    w('\t\t\t<UML:Namespace.ownedElement>')
+    w('\t\t\t\t<UML:Class name="EARootClass" xmi.id="%s" isRoot="true" isLeaf="false" isAbstract="false"/>' % ROOT_ID)
+    _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, 2, loc, ymsg)
+    w('\t\t\t</UML:Namespace.ownedElement>')
+    w('\t\t</UML:Model>')
+    _emit_diagram(w, parsed, PKGID, DIAGID, loc, ymsg, bottom)
+    _footer(w)
+    return '\n'.join(out) + '\n'
+
+
+def build_combined(paths, title='SPP_Secuencias_TODOS'):
+    """Varios diagramas en un solo documento: un paquete contenedor con un
+    subpaquete (y un diagrama) por caso de uso."""
+    MODELID = 'MX_' + gid(newg())
+    ROOTPKG = gid(newg())
+    cnt = [1]
+    loc = lambda: (cnt.__setitem__(0, cnt[0] + 1) or cnt[0])
+    out = []; w = out.append
+    _header(w)
+    w('\t\t<UML:Model name="EA Model" xmi.id="%s">' % MODELID)
+    w('\t\t\t<UML:Namespace.ownedElement>')
+    w('\t\t\t\t<UML:Class name="EARootClass" xmi.id="%s" isRoot="true" isLeaf="false" isAbstract="false"/>' % ROOT_ID)
+    # paquete contenedor
+    w('\t\t\t\t<UML:Package name="%s" xmi.id="%s" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">' % (esc(title), ROOTPKG))
+    w('\t\t\t\t\t<UML:ModelElement.taggedValue>')
+    for t, v in [('ea_package_id', str(loc())), ('created', DATE), ('modified', DATE),
+                 ('iscontrolled', 'FALSE'), ('isprotected', 'FALSE'), ('version', '1.0'),
+                 ('author', AUTHOR), ('status', 'Proposed'), ('ea_stype', 'Public')]:
+        w('\t\t\t\t\t\t<UML:TaggedValue tag="%s" value="%s"/>' % (t, esc(v)))
+    w('\t\t\t\t\t</UML:ModelElement.taggedValue>')
+    w('\t\t\t\t\t<UML:Namespace.ownedElement>')
+    diagrams = []
+    for path in paths:
+        parsed = parse(path)
+        pkg_name, parts, by_id, msgs, order, frags = parsed
+        ymsg, bottom = _geometry(parts, order)
+        PKGID, COLLABID, INTID, DIAGID = (gid(newg()) for _ in range(4))
+        _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, loc(), loc, ymsg)
+        diagrams.append((parsed, PKGID, DIAGID, ymsg, bottom))
+    w('\t\t\t\t\t</UML:Namespace.ownedElement>')
+    w('\t\t\t\t</UML:Package>')
+    w('\t\t\t</UML:Namespace.ownedElement>')
+    w('\t\t</UML:Model>')
+    for parsed, PKGID, DIAGID, ymsg, bottom in diagrams:
+        _emit_diagram(w, parsed, PKGID, DIAGID, loc, ymsg, bottom)
+    _footer(w)
     return '\n'.join(out) + '\n'
 
 
 if __name__ == '__main__':
-    src = sys.argv[1]
-    dst = sys.argv[2]
-    xml = build(src)
-    with open(dst, 'w', encoding='cp1252', errors='xmlcharrefreplace') as f:
-        f.write(xml)
-    print('OK ->', dst)
+    args = sys.argv[1:]
+    if args and args[0] == '--combined':
+        dst = args[1]
+        srcs = args[2:]
+        xml = build_combined(srcs)
+        with open(dst, 'w', encoding='cp1252', errors='xmlcharrefreplace') as f:
+            f.write(xml)
+        print('OK (combinado, %d diagramas) ->' % len(srcs), dst)
+    else:
+        src, dst = args[0], args[1]
+        xml = build(src)
+        with open(dst, 'w', encoding='cp1252', errors='xmlcharrefreplace') as f:
+            f.write(xml)
+        print('OK ->', dst)

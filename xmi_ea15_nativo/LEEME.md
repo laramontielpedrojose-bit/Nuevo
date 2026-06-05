@@ -5,6 +5,12 @@ Los 12 casos de uso del sistema (SPP) regenerados en el **formato nativo de EA
 Este dialecto es el que importa de forma fiable en **Enterprise Architect 15**
 (a diferencia del XMI 2.1 genérico).
 
+## Archivo combinado
+- **`SPP_Secuencias_TODOS.xmi`** — los **12 casos de uso en un solo archivo**,
+  dentro de un paquete contenedor `SPP_Secuencias_TODOS` con un subpaquete y un
+  diagrama por caso de uso. Importa todo de una vez (mismos criterios que los
+  individuales). IDs y `ea_localid` son únicos globalmente.
+
 ## Archivos
 | Archivo | Caso de uso |
 |---------|-------------|
