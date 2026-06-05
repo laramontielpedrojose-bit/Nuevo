@@ -94,10 +94,10 @@ def parse(path):
                 if pr is not None and pr.get('stereotype'):
                     stereo[el.get(XMI + 'idref')] = pr.get('stereotype')
 
-    # participantes en orden
-    parts = []           # lista de P
-    by_id = {}
-    for i, lf in enumerate(interaction.findall('lifeline')):
+    # participantes en orden (se omite la capa 'BD' = base de datos;
+    # el flujo llega solo hasta DAO / DTO)
+    all_parts = []
+    for lf in interaction.findall('lifeline'):
         p = P()
         p.id = lf.get(XMI + 'id')
         nm = lf.get('name') or ''
@@ -105,9 +105,13 @@ def parse(path):
         cls = prop_type.get(lf.get('represents'))
         p.is_actor = cls in actor_ids
         p.stereo = stereo.get(p.id)
+        all_parts.append(p)
+
+    bd_ids = {p.id for p in all_parts if p.name.strip().upper() == 'BD'}
+    parts = [p for p in all_parts if p.id not in bd_ids]
+    for i, p in enumerate(parts):
         p.localid = i + 2          # localids 2..n
-        parts.append(p)
-        by_id[p.id] = p
+    by_id = {p.id: p for p in parts}
 
     # mos id -> lifeline id  (tag 'fragment' con xmi:type MessageOccurrenceSpecification)
     mos_cover = {}
@@ -118,11 +122,19 @@ def parse(path):
     # mensajes: id -> (name, sort, sendMos, recvMos)
     msgs = {}
     for m in interaction.findall('message'):
+        send = m.get('sendEvent')
+        recv = m.get('receiveEvent')
+        snd = mos_cover.get(send)
+        rcv = mos_cover.get(recv)
         msgs[m.get(XMI + 'id')] = {
             'name': m.get('name') or '',
             'sort': m.get('messageSort') or 'synchCall',
-            'send': m.get('sendEvent'),
-            'recv': m.get('receiveEvent'),
+            'send': send,
+            'recv': recv,
+            'sender': snd,
+            'receiver': rcv,
+            # se descarta si toca la capa BD o un participante inexistente
+            'drop': (snd in bd_ids) or (rcv in bd_ids) or (snd not in by_id) or (rcv not in by_id),
         }
 
     # recorrido en orden de documento para asignar seqno y construir fragmentos
@@ -137,10 +149,10 @@ def parse(path):
             xt = ch.get(XMI + 'type') or ''
             if tag == 'fragment' and xt.endswith('MessageOccurrenceSpecification'):
                 mid = ch.get('message')
-                if mid and mid not in seen:
+                if mid and mid not in seen and not msgs.get(mid, {}).get('drop'):
                     seen.add(mid)
                     order.append(mid)
-                    s = len(order)          # seqno 1..n
+                    s = len(order)          # seqno 1..n (contiguo tras omitir BD)
                     msgs[mid]['seqno'] = s
                     for fr in stack:
                         fr['seqs'].append(s)
@@ -170,10 +182,8 @@ def parse(path):
 
     walk(interaction)
 
-    # senders/receivers de cada mensaje (por lifeline)
-    for mid, m in msgs.items():
-        m['sender'] = mos_cover.get(m['send'])
-        m['receiver'] = mos_cover.get(m['recv'])
+    # descarta fragmentos que quedaron sin mensajes (p.ej. solo envolvian BD)
+    frags = [f for f in frags if f['seqs']]
 
     return pkg_name, parts, by_id, msgs, order, frags
 
@@ -285,11 +295,23 @@ def build(path):
           % (nm_attr, gid(mid), gid(m['sender']), gid(m['receiver'])))
         w('\t\t\t\t\t\t\t\t\t\t\t<UML:ModelElement.taggedValue>')
         mt = name if ('(' in name or not name) else name + '()'
+        # respeta parametros y valor de retorno
+        params, retval = '', 'void'
+        mm = re.match(r'^\s*[^()]*\((.*)\)\s*:?\s*(.*)$', name)
+        if mm:
+            params = mm.group(1).strip()
+            retval = (mm.group(2).strip() or 'void')
+        elif is_ret and name:
+            retval = name          # un return: el valor devuelto es la etiqueta
+        if params:
+            pd2 = 'retval=%s;params=;paramsDlg=%s;' % (retval, params)
+        else:
+            pd2 = 'retval=%s;' % retval
         tv = [('style', '1'), ('ea_type', 'Sequence'),
               ('direction', 'Source -&gt; Destination'),
               ('linemode', '1'), ('linecolor', '-1'), ('linewidth', '0'),
               ('seqno', str(seq)), ('headStyle', '0'), ('lineStyle', '0'),
-              ('privatedata1', 'Synchronous'), ('privatedata2', 'retval=void;'),
+              ('privatedata1', 'Synchronous'), ('privatedata2', pd2),
               ('privatedata3', pkind), ('privatedata4', '0'),
               ('ea_localid', str(seq + 100)),
               ('ea_sourceName', s.name), ('ea_targetName', r.name),
