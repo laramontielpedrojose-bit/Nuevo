@@ -292,13 +292,14 @@ def _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, pkgnum, loc, ymsg):
         full = m['name']
         sx, ex = s.center, r.center
         y = -ymsg(seq)
-        # El atributo name DEBE llevar la etiqueta completa CON parametros: EA
-        # muestra en el diagrama el 'name' del conector (no el 'mt').
+        # name = nombre CORTO del metodo; la firma completa va en 'mt'. Con el flag
+        # OpParams=1 del diagrama, EA dibuja la etiqueta metodo(params) desde 'mt'.
         params, retval = '', 'void'
         if '(' in full:
+            method = full.split('(', 1)[0].strip()
             inside = full[full.index('(') + 1: full.rindex(')')] if ')' in full else full.split('(', 1)[1]
             tail = (full[full.rindex(')') + 1:] if ')' in full else '').strip().lstrip(':').strip()
-            disp_name = full
+            disp_name = method
             mt = full
             params = inside.strip()
             retval = tail or 'void'
@@ -403,13 +404,31 @@ def _emit_diagram(w, parsed, PKGID, DIAGID, loc, ymsg, bottom):
     w('\t\t<UML:Diagram name="%s" xmi.id="%s" diagramType="SequenceDiagram" owner="%s" toolName="Enterprise Architect 2.5">'
       % (esc(pkg_name), DIAGID, PKGID))
     w('\t\t\t<UML:ModelElement.taggedValue>')
+    # EAStyle con OpParams=1 -> EA MUESTRA los parametros de las llamadas en el
+    # diagrama (igual que la plantilla 'algo sucede'). ShowOpRetType=1 muestra el
+    # tipo de retorno; SuppConnectorLabels=0 y SuppressBrackets=0 no los ocultan.
+    EASTYLE = ('ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;'
+               'Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;'
+               'PPgs.cx=1;PPgs.cy=1;DocSize.cx=826;DocSize.cy=1169;ShowDetails=0;Orientation=P;'
+               'Zoom=100;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;'
+               'CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;'
+               'HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;'
+               'ConnectorNotation=UML 2.1;ExplicitNavigability=0;ShowShape=1;AllDockable=0;'
+               'AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;'
+               'm_bElementClassifier=1;SPT=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;'
+               'PrintPageHeadFoot=0;ShowAsList=0;')
+    STYLEEX = ('SaveTag=DB6699EE;ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;'
+               'SuppressFOC=0;INT_ARGS=;INT_RET=;INT_ATT=;SeqTopMargin=50;MatrixActive=0;'
+               'SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;'
+               'TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;'
+               'AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;'
+               'MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;'
+               'SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;'
+               'SuppressedCompartments=;Theme=:119;')
     for t, v in [('version', '1.0'), ('author', AUTHOR), ('created_date', DATE),
                  ('modified_date', DATE), ('package', PKGID), ('type', 'Sequence'),
                  ('ea_localid', str(loc())),
-                 ('EAStyle', 'ShowPrivate=1;ShowProtected=1;ShowPublic=1;Locked=0;Border=1;'
-                             'HighlightForeign=1;PackageContents=1;SequenceNotes=0;Orientation=P;'
-                             'Zoom=100;ConnectorNotation=UML 2.1;'),
-                 ('styleex', 'SeqTopMargin=50;SwimlanesActive=1;TConnectorNotation=UML 2.1;')]:
+                 ('EAStyle', EASTYLE), ('styleex', STYLEEX)]:
         w('\t\t\t\t<UML:TaggedValue tag="%s" value="%s"/>' % (t, esc(v)))
     w('\t\t\t</UML:ModelElement.taggedValue>')
     w('\t\t\t<UML:Diagram.element>')

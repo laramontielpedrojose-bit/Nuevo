@@ -48,6 +48,8 @@ Este dialecto es el que importa de forma fiable en **Enterprise Architect 15**
 - **Fragmentos combinados** `alt` / `opt` / `loop` como `InteractionFragment`
   nativo, con sus guardas como particiones (operandos).
 
+- **Visualización de parámetros**: el diagrama incluye `OpParams=1` (y `ShowOpRetType=1`) en su `EAStyle`, igual que la plantilla `algo sucede`, para que EA **dibuje los argumentos** de cada llamada (no solo los guarde en propiedades). El `name` del mensaje lleva el método y la firma completa va en `mt`.
+
 ## Cómo importar en EA 15
 1. Project Browser → clic derecho sobre el paquete destino.
 2. **Import/Export → Import Package from XMI…** (`Ctrl+Alt+I`).
