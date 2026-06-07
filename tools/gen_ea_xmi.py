@@ -40,6 +40,14 @@ REMAP_LIFELINES = {
     # por lo que su DAO se fusiona con el de Actividad.
     'CU-25_GestionarActividades': {'ProrrogaDAO': 'ActivityDAO'},
 }
+# Renombrado de guardas (texto del operando) por diagrama.
+GUARD_REMAP = {
+    # "Agregar" se extrajo a su propio CU (Anadir Actividad); aqui solo queda
+    # Actualizar (que dispara CU-26).
+    'CU-25_GestionarActividades': {
+        'accion = Agregar / Actualizar': 'accion = Actualizar (dispara CU-26; Agregar = CU Anadir Actividad)',
+    },
+}
 
 
 def gid(src):
@@ -137,6 +145,7 @@ def parse(path):
         base = base.rsplit('.', 1)[0]
     drop_names = DROP_LIFELINES.get(base, set())
     remap_names = REMAP_LIFELINES.get(base, {})
+    guard_remap = GUARD_REMAP.get(base, {})
     name2part = {}
     for p in all_parts:
         name2part.setdefault(p.name, p)
@@ -226,6 +235,7 @@ def parse(path):
                         sp = gd.find('specification')
                         if sp is not None and sp.get('body'):
                             g = sp.get('body')
+                    g = guard_remap.get(g, g)
                     fr['operands'].append(g)
                 frags.append(fr)
                 stack.append(fr)
@@ -547,9 +557,83 @@ def _footer(w):
     w('</XMI>')
 
 
-def build(path):
-    """Un solo diagrama -> documento XMI nativo."""
-    parsed = parse(path)
+def _as_parsed(item):
+    """Acepta una ruta (str, se parsea) o una tupla ya parseada."""
+    return parse(item) if isinstance(item, str) else item
+
+
+def build_spec(pkg_name, participants, events):
+    """Construye datos 'parsed' a partir de una especificacion compacta, para
+    diagramas que no tienen archivo de origen.
+      participants: lista de (alias, nombre, kind) con kind en
+                    actor/boundary/control/object
+      events: lista de eventos:
+              ('msg', emisor, receptor, etiqueta, tipo)  tipo: call/reply/create
+              ('alt', [(guarda, [eventos]), ...])
+              ('opt', guarda, [eventos])
+              ('loop', guarda, [eventos])
+    """
+    parts = []
+    alias2p = {}
+    for alias, name, kind in participants:
+        p = P()
+        p.id = newg()
+        p.name = name[1:] if name.startswith(':') else name
+        p.is_actor = (kind == 'actor')
+        p.stereo = {'boundary': 'boundary', 'control': 'control'}.get(kind)
+        p.create_seq = None
+        parts.append(p)
+        alias2p[alias] = p
+    by_id = {p.id: p for p in parts}
+    msgs = {}
+    order = []
+    frags = []
+
+    def add_msg(snd, rcv, label, kind):
+        mid = newg()
+        sort = {'call': 'synchCall', 'reply': 'reply', 'create': 'createMessage'}[kind]
+        order.append(mid)
+        seq = len(order)
+        msgs[mid] = {'name': label, 'sort': sort,
+                     'sender': alias2p[snd].id, 'receiver': alias2p[rcv].id, 'seqno': seq}
+        if kind == 'create' and alias2p[rcv].create_seq is None:
+            alias2p[rcv].create_seq = seq
+        return seq
+
+    def walk(evs, stack):
+        for ev in evs:
+            if ev[0] == 'msg':
+                _, snd, rcv, label, kind = ev
+                seq = add_msg(snd, rcv, label, kind)
+                for fr in stack:
+                    fr['seqs'].append(seq)
+                    fr['cov'].add(alias2p[snd].id)
+                    fr['cov'].add(alias2p[rcv].id)
+            else:
+                op = ev[0]
+                fr = {'id': newg(), 'op': op, 'operands': [], 'seqs': [],
+                      'cov': set(), 'depth': len(stack)}
+                frags.append(fr)
+                stack.append(fr)
+                if op == 'alt':
+                    for guard, sub in ev[1]:
+                        fr['operands'].append(guard)
+                        walk(sub, stack)
+                else:
+                    fr['operands'].append(ev[1])
+                    walk(ev[2], stack)
+                stack.pop()
+
+    walk(events, [])
+    for fr in frags:
+        fr['covered'] = list(fr['cov'])
+    frags = [f for f in frags if f['seqs']]
+    return pkg_name, parts, by_id, msgs, order, frags
+
+
+def build(source):
+    """Un solo diagrama -> documento XMI nativo. 'source' = ruta o datos parsed."""
+    parsed = _as_parsed(source)
     pkg_name, parts, by_id, msgs, order, frags = parsed
     y_of, bottom = _layout(parts, order, msgs, frags)
     PKGID, COLLABID, INTID, DIAGID = (gid(newg()) for _ in range(4))
@@ -569,9 +653,9 @@ def build(path):
     return '\n'.join(out) + '\n'
 
 
-def build_combined(paths, title='SPP_Secuencias_TODOS'):
+def build_combined(sources, title='SPP_Secuencias_TODOS'):
     """Varios diagramas en un solo documento: un paquete contenedor con un
-    subpaquete (y un diagrama) por caso de uso."""
+    subpaquete (y un diagrama) por caso de uso. Cada 'source' = ruta o parsed."""
     MODELID = 'MX_' + gid(newg())
     ROOTPKG = gid(newg())
     cnt = [1]
@@ -581,7 +665,6 @@ def build_combined(paths, title='SPP_Secuencias_TODOS'):
     w('\t\t<UML:Model name="EA Model" xmi.id="%s">' % MODELID)
     w('\t\t\t<UML:Namespace.ownedElement>')
     w('\t\t\t\t<UML:Class name="EARootClass" xmi.id="%s" isRoot="true" isLeaf="false" isAbstract="false"/>' % ROOT_ID)
-    # paquete contenedor
     w('\t\t\t\t<UML:Package name="%s" xmi.id="%s" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">' % (esc(title), ROOTPKG))
     w('\t\t\t\t\t<UML:ModelElement.taggedValue>')
     for t, v in [('ea_package_id', str(loc())), ('created', DATE), ('modified', DATE),
@@ -591,8 +674,8 @@ def build_combined(paths, title='SPP_Secuencias_TODOS'):
     w('\t\t\t\t\t</UML:ModelElement.taggedValue>')
     w('\t\t\t\t\t<UML:Namespace.ownedElement>')
     diagrams = []
-    for path in paths:
-        parsed = parse(path)
+    for src in sources:
+        parsed = _as_parsed(src)
         pkg_name, parts, by_id, msgs, order, frags = parsed
         y_of, bottom = _layout(parts, order, msgs, frags)
         PKGID, COLLABID, INTID, DIAGID = (gid(newg()) for _ in range(4))

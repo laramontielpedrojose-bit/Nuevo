@@ -1,0 +1,53 @@
+@startuml CU-27_AnadirActividad
+!include _comun.puml
+title CU-27 Anadir Actividad
+
+actor Profesor
+boundary ":GUIAddActivity" as UI
+participant ":AddActivityController" as C
+participant "activity : Activity" as DTO
+participant ":ActivityDAO" as DAO
+
+Profesor -> UI : llenar formulario y clic en "Guardar"
+activate UI
+UI -> C : addActivity(actionEvent)
+activate C
+
+alt [campos requeridos vacios]
+    C -> UI : showAlert("Campos vacios", "Complete los campos obligatorios.", WARNING)
+    UI --> Profesor : muestra dialogo
+else [fechas fuera del rango del proyecto]
+    C -> UI : showAlert("Fechas fuera del rango del proyecto", "Ajuste las fechas.", WARNING)
+    UI --> Profesor : muestra dialogo
+else [datos validos]
+    create DTO
+    C -> DTO : new Activity()
+    activate DTO
+    C -> DTO : setName(nameTextField.getText())
+    C -> DTO : setDescription(descriptionTextArea.getText())
+    C -> DTO : setStartDate(fechaInicioPicker.getValue())
+    C -> DTO : setEndDate(fechaFinPicker.getValue())
+    C -> DTO : setIdProject(idProject)
+
+    C -> DAO : save(activity)
+    activate DAO
+    DAO -> DTO : getName() / getDescription() / getStartDate() / getEndDate() / getIdProject()
+    DTO --> DAO : valores
+    DAO --> C : boolean
+    deactivate DAO
+    deactivate DTO
+
+    alt [agregada]
+        C -> UI : showAlert("Actividad agregada", "La actividad fue registrada correctamente.", INFORMATION)
+        UI --> Profesor : muestra dialogo
+    else [ValidationException]
+        C -> UI : showAlert("Error de validacion", validationException.getMessage(), ERROR)
+        UI --> Profesor : muestra dialogo
+    else [ServiceException]
+        C -> UI : showAlert("Servicio no disponible", "No se pudo guardar la actividad. Intente mas tarde.", ERROR)
+        UI --> Profesor : muestra dialogo
+    end
+end
+deactivate C
+deactivate UI
+@enduml

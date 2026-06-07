@@ -26,6 +26,7 @@ Este dialecto es el que importa de forma fiable en **Enterprise Architect 15**
 | CU-22_AnadirAutoevaluacion.xmi | Añadir autoevaluación |
 | CU-23_EvaluacionOrganizacionVinculada.xmi | Evaluación de organización vinculada |
 | CU-25_GestionarActividades.xmi | Gestionar actividades |
+| CU-27_AnadirActividad.xmi | Añadir actividad (CU propio) |
 
 ## Criterios aplicados
 - **Sin capa de Base de Datos (`BD`)**: el flujo llega solo hasta la capa
@@ -63,4 +64,6 @@ python3 tools/gen_ea_xmi.py CU-XX_origen.xmi CU-XX_salida.xmi
 ```
 
 ## Ajustes de modelado
+- **CU-27 (Añadir Actividad)**: es un CU propio (no estaba como diagrama). Se modela por analogía con CU-14/CU-26: `:GUIAddActivity` → `:AddActivityController` crea `activity : Activity` (lifecycle New) y la persiste con `:ActivityDAO.save(...)`, con validaciones y resultado (agregada / ValidationException / ServiceException). **Solo agrega**, no modifica. Fuente editable en `diagramas_secuencia/CU-27_AnadirActividad.puml`.
+- **CU-25 (Gestionar Actividades)**: como Añadir se separó a CU-27, la rama final ya no es "Agregar / Actualizar" sino solo **Actualizar** (que dispara CU-26).
 - **CU-25 (Gestionar Actividades)**: `prorroga` no es una tabla aparte, por lo que **no tiene línea de vida propia**; se modela como modificación directa sobre la actividad. Se elimina la lifeline `prorroga : Prorroga` y `:ProrrogaDAO` se fusiona en `:ActivityDAO` (el guardado de la prórroga va a la capa de actividad).
