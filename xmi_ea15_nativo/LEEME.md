@@ -61,3 +61,6 @@ Generados con `tools/gen_ea_xmi.py` a partir de los XMI 2.1 de origen:
 ```
 python3 tools/gen_ea_xmi.py CU-XX_origen.xmi CU-XX_salida.xmi
 ```
+
+## Ajustes de modelado
+- **CU-25 (Gestionar Actividades)**: `prorroga` no es una tabla aparte, por lo que **no tiene línea de vida propia**; se modela como modificación directa sobre la actividad. Se elimina la lifeline `prorroga : Prorroga` y `:ProrrogaDAO` se fusiona en `:ActivityDAO` (el guardado de la prórroga va a la capa de actividad).

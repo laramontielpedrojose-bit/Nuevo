@@ -28,6 +28,19 @@ OP_NTYPE = {'alt': 0, 'opt': 1, 'loop': 2, 'break': 3, 'par': 4, 'seq': 5,
 
 ROOT_ID = 'EAID_11111111_5487_4080_A7F4_41526CB0AA00'
 
+# Ajustes de modelado por diagrama (nombre de archivo de origen) ---------------
+# DROP_LIFELINES: lifelines a eliminar por completo (con todos sus mensajes).
+# REMAP_LIFELINES: lifelines que se fusionan en otra (sus mensajes se redirigen).
+# Nombres SIN el ':' inicial (asi quedan tras normalizar).
+DROP_LIFELINES = {
+    'CU-25_GestionarActividades': {'prorroga : Prorroga'},
+}
+REMAP_LIFELINES = {
+    # prorroga no es una tabla aparte: se modifica directo sobre la actividad,
+    # por lo que su DAO se fusiona con el de Actividad.
+    'CU-25_GestionarActividades': {'ProrrogaDAO': 'ActivityDAO'},
+}
+
 
 def gid(src):
     """EAID_ + 32 hex  ->  EAID_8_4_4_4_12 (formato nativo EA)."""
@@ -117,7 +130,34 @@ def parse(path):
         all_parts.append(p)
 
     bd_ids = {p.id for p in all_parts if p.name.strip().upper() == 'BD'}
-    parts = [p for p in all_parts if p.id not in bd_ids]
+
+    # ajustes por diagrama (omitir / fusionar lifelines)
+    base = path.rsplit('/', 1)[-1].rsplit('\\', 1)[-1]
+    if base.endswith('.xmi') or base.endswith('.xml'):
+        base = base.rsplit('.', 1)[0]
+    drop_names = DROP_LIFELINES.get(base, set())
+    remap_names = REMAP_LIFELINES.get(base, {})
+    name2part = {}
+    for p in all_parts:
+        name2part.setdefault(p.name, p)
+    for p in all_parts:                       # lifelines a eliminar del todo
+        if p.name in drop_names:
+            bd_ids.add(p.id)
+    alias = {}                                # id origen -> id destino (fusion)
+    for src_name, tgt_name in remap_names.items():
+        src = name2part.get(src_name)
+        tgt = name2part.get(tgt_name)
+        if src is not None and tgt is not None:
+            alias[src.id] = tgt.id
+
+    def resolve(i):
+        seen = set()
+        while i in alias and i not in seen:
+            seen.add(i)
+            i = alias[i]
+        return i
+
+    parts = [p for p in all_parts if p.id not in bd_ids and p.id not in alias]
     for i, p in enumerate(parts):
         p.localid = i + 2          # localids 2..n
     by_id = {p.id: p for p in parts}
@@ -133,8 +173,8 @@ def parse(path):
     for m in interaction.findall('message'):
         send = m.get('sendEvent')
         recv = m.get('receiveEvent')
-        snd = mos_cover.get(send)
-        rcv = mos_cover.get(recv)
+        snd = resolve(mos_cover.get(send))
+        rcv = resolve(mos_cover.get(recv))
         msgs[m.get(XMI + 'id')] = {
             'name': m.get('name') or '',
             'sort': m.get('messageSort') or 'synchCall',
@@ -142,7 +182,7 @@ def parse(path):
             'recv': recv,
             'sender': snd,
             'receiver': rcv,
-            # se descarta si toca la capa BD o un participante inexistente
+            # se descarta si toca una lifeline eliminada o un participante inexistente
             'drop': (snd in bd_ids) or (rcv in bd_ids) or (snd not in by_id) or (rcv not in by_id),
         }
 
@@ -166,10 +206,15 @@ def parse(path):
                     for fr in stack:
                         fr['seqs'].append(s)
             elif tag == 'fragment' and xt.endswith('CombinedFragment'):
+                cov_ids = []
+                for c in (ch.get('covered') or '').split():
+                    rc = resolve(c)
+                    if rc not in bd_ids and rc not in cov_ids:
+                        cov_ids.append(rc)
                 fr = {
                     'id': ch.get(XMI + 'id'),
                     'op': ch.get('interactionOperator') or 'alt',
-                    'covered': (ch.get('covered') or '').split(),
+                    'covered': cov_ids,
                     'operands': [],
                     'seqs': [],
                     'depth': len(stack),
