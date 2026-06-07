@@ -210,20 +210,46 @@ DATE = '2026-06-05 12:00:00'
 AUTHOR = 'EA'
 
 
-def _geometry(parts, order):
-    STEP = 200
+def _layout(parts, order, msgs, frags):
+    """Calcula la geometria. Simula el apilado vertical real de EA: cada mensaje
+    avanza un paso, los auto-mensajes ocupan mas alto y cada fragmento abre una
+    banda (cabecera del operador). Asi las cajas de los fragmentos encierran
+    correctamente sus mensajes."""
+    # columnas horizontales de lifelines
+    STEPX = 200
     LX = 40
     for i, p in enumerate(parts):
-        p.left = LX + i * STEP
+        p.left = LX + i * STEPX
         p.width = 90 if p.is_actor else 100
         p.right = p.left + p.width
         p.center = p.left + p.width // 2
-    ymsg = lambda s: 130 + s * 40
-    bottom = ymsg(len(order) + 1) + 60
-    return ymsg, bottom
+
+    # apilado vertical
+    Y0, STEP, SELF, FH, FF = 120, 46, 28, 30, 14
+    for f in frags:
+        f['min'] = min(f['seqs'])
+        f['max'] = max(f['seqs'])
+    y_of = {}
+    Y = Y0
+    n = len(order)
+    for seq in range(1, n + 1):
+        # fragmentos que ABREN aqui (orden de documento: externo -> interno)
+        for f in [f for f in frags if f['min'] == seq]:
+            f['top'] = Y - 6
+            Y += FH
+        y_of[seq] = Y
+        mid = order[seq - 1]
+        self_msg = msgs[mid]['sender'] == msgs[mid]['receiver']
+        Y += STEP + (SELF if self_msg else 0)
+        # fragmentos que CIERRAN aqui (interno -> externo)
+        for f in reversed([f for f in frags if f['max'] == seq]):
+            f['bottom'] = Y + 8
+            Y += FF
+    bottom = Y + 50
+    return y_of, bottom
 
 
-def _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, pkgnum, loc, ymsg):
+def _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, pkgnum, loc, y_of):
     """Emite <UML:Package> ... </UML:Package> con Collaboration, Actores y Fragmentos.
     'loc' es un asignador global de ea_localid (callable -> int unico)."""
     pkg_name, parts, by_id, msgs, order, frags = parsed
@@ -291,7 +317,7 @@ def _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, pkgnum, loc, ymsg):
         pkind = 'Return' if is_ret else ('Create' if is_create else 'Call')
         full = m['name']
         sx, ex = s.center, r.center
-        y = -ymsg(seq)
+        y = -y_of[seq]
         # name = nombre CORTO del metodo; la firma completa va en 'mt'. Con el flag
         # OpParams=1 del diagrama, EA dibuja la etiqueta metodo(params) desde 'mt'.
         params, retval = '', 'void'
@@ -399,7 +425,7 @@ def _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, pkgnum, loc, ymsg):
     w('\t\t\t\t</UML:Package>')
 
 
-def _emit_diagram(w, parsed, PKGID, DIAGID, loc, ymsg, bottom):
+def _emit_diagram(w, parsed, PKGID, DIAGID, loc, y_of, bottom):
     pkg_name, parts, by_id, msgs, order, frags = parsed
     w('\t\t<UML:Diagram name="%s" xmi.id="%s" diagramType="SequenceDiagram" owner="%s" toolName="Enterprise Architect 2.5">'
       % (esc(pkg_name), DIAGID, PKGID))
@@ -435,20 +461,19 @@ def _emit_diagram(w, parsed, PKGID, DIAGID, loc, ymsg, bottom):
     seqn = 0
     for p in parts:
         seqn += 1
-        ptop = (ymsg(p.create_seq) - 18) if getattr(p, 'create_seq', None) else 50
+        ptop = (y_of[p.create_seq] - 18) if getattr(p, 'create_seq', None) else 50
         w('\t\t\t\t<UML:DiagramElement geometry="Left=%d;Top=%d;Right=%d;Bottom=%d;" subject="%s" seqno="%d" style="DUID=%s;"/>'
           % (p.left, ptop, p.right, bottom, gid(p.id), seqn, uuid.uuid4().hex[:8].upper()))
     for fr in frags:
         seqn += 1
-        seqs = fr['seqs'] or [1]
         cov = [by_id[c] for c in fr['covered'] if c in by_id]
         if cov:
-            fl = min(c.left for c in cov) - 25 + fr['depth'] * 10
-            frr = max(c.right for c in cov) + 25 - fr['depth'] * 10
+            fl = min(c.left for c in cov) - 25 + fr['depth'] * 12
+            frr = max(c.right for c in cov) + 25 - fr['depth'] * 12
         else:
             fl, frr = 20, 700
-        ftop = ymsg(min(seqs)) - 28
-        fbot = ymsg(max(seqs)) + 16
+        ftop = fr['top']
+        fbot = fr['bottom']
         w('\t\t\t\t<UML:DiagramElement geometry="Left=%d;Top=%d;Right=%d;Bottom=%d;" subject="%s" seqno="%d" style="DUID=%s;"/>'
           % (fl, ftop, frr, fbot, gid(fr['id']), seqn, uuid.uuid4().hex[:8].upper()))
     for mid in order:
@@ -481,7 +506,7 @@ def build(path):
     """Un solo diagrama -> documento XMI nativo."""
     parsed = parse(path)
     pkg_name, parts, by_id, msgs, order, frags = parsed
-    ymsg, bottom = _geometry(parts, order)
+    y_of, bottom = _layout(parts, order, msgs, frags)
     PKGID, COLLABID, INTID, DIAGID = (gid(newg()) for _ in range(4))
     MODELID = 'MX_' + gid(newg())
     cnt = [1]
@@ -491,10 +516,10 @@ def build(path):
     w('\t\t<UML:Model name="EA Model" xmi.id="%s">' % MODELID)
     w('\t\t\t<UML:Namespace.ownedElement>')
     w('\t\t\t\t<UML:Class name="EARootClass" xmi.id="%s" isRoot="true" isLeaf="false" isAbstract="false"/>' % ROOT_ID)
-    _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, 2, loc, ymsg)
+    _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, 2, loc, y_of)
     w('\t\t\t</UML:Namespace.ownedElement>')
     w('\t\t</UML:Model>')
-    _emit_diagram(w, parsed, PKGID, DIAGID, loc, ymsg, bottom)
+    _emit_diagram(w, parsed, PKGID, DIAGID, loc, y_of, bottom)
     _footer(w)
     return '\n'.join(out) + '\n'
 
@@ -524,16 +549,16 @@ def build_combined(paths, title='SPP_Secuencias_TODOS'):
     for path in paths:
         parsed = parse(path)
         pkg_name, parts, by_id, msgs, order, frags = parsed
-        ymsg, bottom = _geometry(parts, order)
+        y_of, bottom = _layout(parts, order, msgs, frags)
         PKGID, COLLABID, INTID, DIAGID = (gid(newg()) for _ in range(4))
-        _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, loc(), loc, ymsg)
-        diagrams.append((parsed, PKGID, DIAGID, ymsg, bottom))
+        _emit_package(w, parsed, PKGID, COLLABID, INTID, DIAGID, loc(), loc, y_of)
+        diagrams.append((parsed, PKGID, DIAGID, y_of, bottom))
     w('\t\t\t\t\t</UML:Namespace.ownedElement>')
     w('\t\t\t\t</UML:Package>')
     w('\t\t\t</UML:Namespace.ownedElement>')
     w('\t\t</UML:Model>')
-    for parsed, PKGID, DIAGID, ymsg, bottom in diagrams:
-        _emit_diagram(w, parsed, PKGID, DIAGID, loc, ymsg, bottom)
+    for parsed, PKGID, DIAGID, y_of, bottom in diagrams:
+        _emit_diagram(w, parsed, PKGID, DIAGID, loc, y_of, bottom)
     _footer(w)
     return '\n'.join(out) + '\n'
 
