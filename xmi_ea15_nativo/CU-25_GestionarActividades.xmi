@@ -7,10 +7,10 @@
 		</XMI.documentation>
 	</XMI.header>
 	<XMI.content>
-		<UML:Model name="EA Model" xmi.id="MX_EAID_5F4EAF2D_6D29_4733_A767_92D2AA625988">
+		<UML:Model name="EA Model" xmi.id="MX_EAID_10367BDE_6877_41FA_8497_B0D0FB00F33D">
 			<UML:Namespace.ownedElement>
 				<UML:Class name="EARootClass" xmi.id="EAID_11111111_5487_4080_A7F4_41526CB0AA00" isRoot="true" isLeaf="false" isAbstract="false"/>
-				<UML:Package name="CU-25_GestionarActividades" xmi.id="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
+				<UML:Package name="CU-25_GestionarActividades" xmi.id="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
 					<UML:ModelElement.taggedValue>
 						<UML:TaggedValue tag="ea_package_id" value="2"/>
 						<UML:TaggedValue tag="created" value="2026-06-05 12:00:00"/>
@@ -23,7 +23,7 @@
 						<UML:TaggedValue tag="ea_stype" value="Public"/>
 					</UML:ModelElement.taggedValue>
 					<UML:Namespace.ownedElement>
-						<UML:Collaboration xmi.id="EAID_739D4BFA_3E21_4668_AA32_3C3C803F66FB_Collaboration" name="Collaborations">
+						<UML:Collaboration xmi.id="EAID_F4D0C503_47E0_4D86_A766_24E7A7021C37_Collaboration" name="Collaborations">
 							<UML:Namespace.ownedElement>
 								<UML:ClassifierRole name="GUIManageActivities" xmi.id="EAID_F084D680_9476_4E5C_A141_25C7EFB03E3D" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
 									<UML:ModelElement.stereotype>
@@ -35,7 +35,7 @@
 										<UML:TaggedValue tag="ea_ntype" value="0"/>
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="isActive" value="false"/>
-										<UML:TaggedValue tag="package" value="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76"/>
+										<UML:TaggedValue tag="package" value="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED"/>
 										<UML:TaggedValue tag="date_created" value="2026-06-05 12:00:00"/>
 										<UML:TaggedValue tag="date_modified" value="2026-06-05 12:00:00"/>
 										<UML:TaggedValue tag="package_name" value="CU-25_GestionarActividades"/>
@@ -47,7 +47,7 @@
 										<UML:TaggedValue tag="ea_localid" value="3"/>
 										<UML:TaggedValue tag="ea_eleType" value="element"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
-										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={DC43EEC8-810C-4A42-85FC-5CB4028A0E64}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=boundary;FQName=EAUML::boundary;@ENDSTEREO;$DES;$CLT={F084D680-9476-4E5C-A141-25C7EFB03E3D}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={12C4BFF7-FBE7-487E-97C7-3C254D17FFF6}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=boundary;FQName=EAUML::boundary;@ENDSTEREO;$DES;$CLT={F084D680-9476-4E5C-A141-25C7EFB03E3D}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
 								<UML:ClassifierRole name="ManageActivitiesController" xmi.id="EAID_67577A57_821C_44A5_B416_A450D026AD26" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
@@ -60,7 +60,7 @@
 										<UML:TaggedValue tag="ea_ntype" value="0"/>
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="isActive" value="false"/>
-										<UML:TaggedValue tag="package" value="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76"/>
+										<UML:TaggedValue tag="package" value="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED"/>
 										<UML:TaggedValue tag="date_created" value="2026-06-05 12:00:00"/>
 										<UML:TaggedValue tag="date_modified" value="2026-06-05 12:00:00"/>
 										<UML:TaggedValue tag="package_name" value="CU-25_GestionarActividades"/>
@@ -72,7 +72,7 @@
 										<UML:TaggedValue tag="ea_localid" value="4"/>
 										<UML:TaggedValue tag="ea_eleType" value="element"/>
 										<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
-										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={6433A956-8F73-4B86-A7D6-134AA92679FF}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=control;FQName=EAUML::control;@ENDSTEREO;$DES;$CLT={67577A57-821C-44A5-B416-A450D026AD26}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+										<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={0FA05976-AE8C-40DC-A9DB-FE0BBEE17370}$XID;$NAM=Stereotypes$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@STEREO;Name=control;FQName=EAUML::control;@ENDSTEREO;$DES;$CLT={67577A57-821C-44A5-B416-A450D026AD26}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 									</UML:ModelElement.taggedValue>
 								</UML:ClassifierRole>
 								<UML:ClassifierRole name="ActivityDAO" xmi.id="EAID_023445A8_3D4F_46F6_8CDD_D107132006D5" visibility="public" base="EAID_11111111_5487_4080_A7F4_41526CB0AA00">
@@ -82,7 +82,7 @@
 										<UML:TaggedValue tag="ea_ntype" value="0"/>
 										<UML:TaggedValue tag="version" value="1.0"/>
 										<UML:TaggedValue tag="isActive" value="false"/>
-										<UML:TaggedValue tag="package" value="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76"/>
+										<UML:TaggedValue tag="package" value="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED"/>
 										<UML:TaggedValue tag="date_created" value="2026-06-05 12:00:00"/>
 										<UML:TaggedValue tag="date_modified" value="2026-06-05 12:00:00"/>
 										<UML:TaggedValue tag="package_name" value="CU-25_GestionarActividades"/>
@@ -97,7 +97,7 @@
 								</UML:ClassifierRole>
 							</UML:Namespace.ownedElement>
 							<UML:Collaboration.interaction>
-								<UML:Interaction xmi.id="EAID_779799DC_1FC3_46BC_861C_2678AD142FB4" name="EAID_779799DC_1FC3_46BC_861C_2678AD142FB4">
+								<UML:Interaction xmi.id="EAID_9A622E27_5D65_4E7B_A3BA_0456DDF9784D" name="EAID_9A622E27_5D65_4E7B_A3BA_0456DDF9784D">
 									<UML:Interaction.message>
 										<UML:Message name="seleccionar proyecto" xmi.id="EAID_15E202D7_7B01_48E0_B139_16EC4820FDBC" visibility="public" sender="EAID_D50CEF26_FC0F_4752_872F_7E66720F7616" receiver="EAID_F084D680_9476_4E5C_A141_25C7EFB03E3D">
 											<UML:ModelElement.taggedValue>
@@ -140,7 +140,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=85;PtStartY=-120;PtEndX=290;PtEndY=-120;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="seleccionar proyecto()"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -185,7 +185,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-166;PtEndX=490;PtEndY=-166;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="refreshActivities(idProject)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -230,7 +230,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-212;PtEndX=690;PtEndY=-212;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="findByProject(idProject)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -275,7 +275,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=690;PtStartY=-258;PtEndX=690;PtEndY=-258;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="mapToActivity(resultSet) : List&lt;Activity&gt;"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -320,7 +320,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=690;PtStartY=-332;PtEndX=490;PtEndY=-332;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="List&lt;Activity&gt;"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -365,7 +365,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-378;PtEndX=290;PtEndY=-378;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="activitiesTableView.setItems(List&lt;Activity&gt;)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -410,7 +410,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-424;PtEndX=85;PtEndY=-424;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="muestra actividades del proyecto"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -455,7 +455,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=85;PtStartY=-500;PtEndX=290;PtEndY=-500;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="clic en &quot;Eliminar&quot;()"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -500,7 +500,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-546;PtEndX=490;PtEndY=-546;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="deleteActivity(actionEvent)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -545,7 +545,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-622;PtEndX=290;PtEndY=-622;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="showAlert(&quot;Sin selección&quot;, &quot;Seleccione una actividad.&quot;, WARNING)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -590,7 +590,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-668;PtEndX=85;PtEndY=-668;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="muestra diálogo"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -635,7 +635,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-714;PtEndX=690;PtEndY=-714;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="delete(selectedActivity.getIdActivity())"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -680,7 +680,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=690;PtStartY=-760;PtEndX=490;PtEndY=-760;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="boolean"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -725,7 +725,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-836;PtEndX=690;PtEndY=-836;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="findByProject(idProject)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -770,7 +770,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=690;PtStartY=-882;PtEndX=690;PtEndY=-882;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="mapToActivity(rs) : List&lt;Activity&gt;"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -815,7 +815,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=690;PtStartY=-956;PtEndX=490;PtEndY=-956;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="List&lt;Activity&gt;"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -860,7 +860,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-1002;PtEndX=290;PtEndY=-1002;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="activitiesTableView.setItems(...) + showAlert(&quot;Actividad eliminada&quot;, &quot;Se eliminó correctamente.&quot;, INFORMATION)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -905,7 +905,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-1048;PtEndX=85;PtEndY=-1048;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="muestra actividades y diálogo"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -950,7 +950,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-1094;PtEndX=290;PtEndY=-1094;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="showAlert(&quot;Servicio no disponible&quot;, &quot;Intente más tarde.&quot;, ERROR)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -995,7 +995,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-1140;PtEndX=85;PtEndY=-1140;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="muestra diálogo"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1040,7 +1040,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=85;PtStartY=-1214;PtEndX=290;PtEndY=-1214;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="clic en &quot;Otorgar Prórroga&quot;()"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1085,7 +1085,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-1260;PtEndX=490;PtEndY=-1260;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="grantExtension(actionEvent)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1130,7 +1130,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-1306;PtEndX=290;PtEndY=-1306;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="Dialog(newDatePicker, motivoField)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1175,7 +1175,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-1352;PtEndX=85;PtEndY=-1352;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="muestra diálogo"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1220,7 +1220,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=85;PtStartY=-1398;PtEndX=290;PtEndY=-1398;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="capturar datos y confirmar()"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1265,7 +1265,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-1444;PtEndX=490;PtEndY=-1444;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="Optional&lt;ButtonType&gt;"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1310,7 +1310,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-1520;PtEndX=290;PtEndY=-1520;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="showAlert(&quot;Fecha requerida&quot;, &quot;Ingrese la nueva fecha.&quot;, WARNING)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1355,7 +1355,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-1566;PtEndX=85;PtEndY=-1566;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="muestra diálogo"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1400,7 +1400,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-1612;PtEndX=290;PtEndY=-1612;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="showAlert(&quot;Motivo requerido&quot;, &quot;Ingrese el motivo.&quot;, WARNING)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1445,7 +1445,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-1658;PtEndX=85;PtEndY=-1658;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="muestra diálogo"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1490,7 +1490,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-1704;PtEndX=290;PtEndY=-1704;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="showAlert(&quot;Fecha fuera del rango del proyecto&quot;, &quot;Ajuste la fecha.&quot;, WARNING)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1535,7 +1535,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-1750;PtEndX=85;PtEndY=-1750;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="muestra diálogo"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1580,7 +1580,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-1796;PtEndX=690;PtEndY=-1796;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="save(prorroga)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1625,7 +1625,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=690;PtStartY=-1842;PtEndX=490;PtEndY=-1842;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="int"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1670,7 +1670,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=490;PtStartY=-1888;PtEndX=290;PtEndY=-1888;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="showAlert(&quot;Prórroga guardada&quot;, &quot;La prórroga fue registrada.&quot;, INFORMATION)"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1715,7 +1715,7 @@
 												<UML:TaggedValue tag="sequence_points" value="PtStartX=290;PtStartY=-1934;PtEndX=85;PtEndY=-1934;"/>
 												<UML:TaggedValue tag="stateflags" value="Activation=0;"/>
 												<UML:TaggedValue tag="virtualInheritance" value="0"/>
-												<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+												<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 												<UML:TaggedValue tag="mt" value="muestra diálogo"/>
 											</UML:ModelElement.taggedValue>
 										</UML:Message>
@@ -1723,14 +1723,14 @@
 								</UML:Interaction>
 							</UML:Collaboration.interaction>
 						</UML:Collaboration>
-						<UML:Actor name="Profesor" xmi.id="EAID_D50CEF26_FC0F_4752_872F_7E66720F7616" visibility="public" namespace="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76" isRoot="false" isLeaf="false" isAbstract="false">
+						<UML:Actor name="Profesor" xmi.id="EAID_D50CEF26_FC0F_4752_872F_7E66720F7616" visibility="public" namespace="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED" isRoot="false" isLeaf="false" isAbstract="false">
 							<UML:ModelElement.taggedValue>
 								<UML:TaggedValue tag="isSpecification" value="false"/>
 								<UML:TaggedValue tag="ea_stype" value="Actor"/>
 								<UML:TaggedValue tag="ea_ntype" value="0"/>
 								<UML:TaggedValue tag="version" value="1.0"/>
 								<UML:TaggedValue tag="isActive" value="false"/>
-								<UML:TaggedValue tag="package" value="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76"/>
+								<UML:TaggedValue tag="package" value="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED"/>
 								<UML:TaggedValue tag="date_created" value="2026-06-05 12:00:00"/>
 								<UML:TaggedValue tag="date_modified" value="2026-06-05 12:00:00"/>
 								<UML:TaggedValue tag="package_name" value="CU-25_GestionarActividades"/>
@@ -1743,14 +1743,14 @@
 								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 							</UML:ModelElement.taggedValue>
 						</UML:Actor>
-						<UML:Class xmi.id="EAID_5D037C21_EE95_4857_97A2_CD163AD6C2B2" visibility="public" namespace="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76" isRoot="false" isLeaf="false" isAbstract="false">
+						<UML:Class xmi.id="EAID_5D037C21_EE95_4857_97A2_CD163AD6C2B2" visibility="public" namespace="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED" isRoot="false" isLeaf="false" isAbstract="false">
 							<UML:ModelElement.taggedValue>
 								<UML:TaggedValue tag="isSpecification" value="false"/>
 								<UML:TaggedValue tag="ea_stype" value="InteractionFragment"/>
 								<UML:TaggedValue tag="ea_ntype" value="0"/>
 								<UML:TaggedValue tag="version" value="1.0"/>
 								<UML:TaggedValue tag="isActive" value="false"/>
-								<UML:TaggedValue tag="package" value="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76"/>
+								<UML:TaggedValue tag="package" value="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED"/>
 								<UML:TaggedValue tag="date_created" value="2026-06-05 12:00:00"/>
 								<UML:TaggedValue tag="date_modified" value="2026-06-05 12:00:00"/>
 								<UML:TaggedValue tag="package_name" value="CU-25_GestionarActividades"/>
@@ -1761,19 +1761,19 @@
 								<UML:TaggedValue tag="tpos" value="0"/>
 								<UML:TaggedValue tag="ea_localid" value="42"/>
 								<UML:TaggedValue tag="ea_eleType" value="element"/>
-								<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+								<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=3;"/>
-								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={ED169D17-4CA2-41B5-B9CB-3BBC4C023097}$XID;$NAM=Partitions$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PAR;Name=accion = Eliminar;Size=100;GUID={6B672B5B-7902-4653-BCC6-17E10508ABD7};@ENDPAR;@PAR;Name=accion = Otorgar Prórroga;Size=100;GUID={28498B61-6E84-4495-BD1B-22FE27C330E9};@ENDPAR;@PAR;Name=accion = Actualizar (dispara CU-26; Agregar = CU Anadir Actividad);Size=100;GUID={745EAAAA-53BA-4251-9AB8-71589DA90BC6};@ENDPAR;$DES;$CLT={5D037C21-EE95-4857-97A2-CD163AD6C2B2}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={EDE12A7C-E3C5-4657-ACC4-4689E0C8075E}$XID;$NAM=Partitions$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PAR;Name=accion = Eliminar;Size=100;GUID={D95422F6-1962-442B-AF94-7E3AFFB28B27};@ENDPAR;@PAR;Name=accion = Otorgar Prórroga;Size=100;GUID={B0340AF3-EA5F-4D31-8AA9-717D4D2DC522};@ENDPAR;@PAR;Name=accion = Actualizar;Size=100;GUID={83860F47-4674-4C36-9073-992965514513};@ENDPAR;$DES;$CLT={5D037C21-EE95-4857-97A2-CD163AD6C2B2}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 							</UML:ModelElement.taggedValue>
 						</UML:Class>
-						<UML:Class xmi.id="EAID_36C9E1B1_69D5_4357_BAF6_814CC930F368" visibility="public" namespace="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76" isRoot="false" isLeaf="false" isAbstract="false">
+						<UML:Class xmi.id="EAID_36C9E1B1_69D5_4357_BAF6_814CC930F368" visibility="public" namespace="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED" isRoot="false" isLeaf="false" isAbstract="false">
 							<UML:ModelElement.taggedValue>
 								<UML:TaggedValue tag="isSpecification" value="false"/>
 								<UML:TaggedValue tag="ea_stype" value="InteractionFragment"/>
 								<UML:TaggedValue tag="ea_ntype" value="0"/>
 								<UML:TaggedValue tag="version" value="1.0"/>
 								<UML:TaggedValue tag="isActive" value="false"/>
-								<UML:TaggedValue tag="package" value="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76"/>
+								<UML:TaggedValue tag="package" value="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED"/>
 								<UML:TaggedValue tag="date_created" value="2026-06-05 12:00:00"/>
 								<UML:TaggedValue tag="date_modified" value="2026-06-05 12:00:00"/>
 								<UML:TaggedValue tag="package_name" value="CU-25_GestionarActividades"/>
@@ -1784,19 +1784,19 @@
 								<UML:TaggedValue tag="tpos" value="0"/>
 								<UML:TaggedValue tag="ea_localid" value="43"/>
 								<UML:TaggedValue tag="ea_eleType" value="element"/>
-								<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+								<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=3;"/>
-								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={BE3C2B81-6EF3-4FEC-B318-E765B74B7FA8}$XID;$NAM=Partitions$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PAR;Name=selectedActivity == null;Size=100;GUID={E05D2CD2-93A5-4E6B-95EF-2B65ABFDE31F};@ENDPAR;@PAR;Name=seleccionada;Size=100;GUID={457A3EFA-1AFB-400E-8AF8-FFD9BE4153E7};@ENDPAR;$DES;$CLT={36C9E1B1-69D5-4357-BAF6-814CC930F368}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={85B322D2-F9F0-451E-8EFD-C14AB624BC51}$XID;$NAM=Partitions$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PAR;Name=selectedActivity == null;Size=100;GUID={3537A507-82C1-44E1-A98D-4F1786FAE63A};@ENDPAR;@PAR;Name=seleccionada;Size=100;GUID={C79F27B2-2087-4887-90F6-86A572A60D9E};@ENDPAR;$DES;$CLT={36C9E1B1-69D5-4357-BAF6-814CC930F368}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 							</UML:ModelElement.taggedValue>
 						</UML:Class>
-						<UML:Class xmi.id="EAID_8E938A2D_5161_4BE8_BCDC_14C9CE8042F6" visibility="public" namespace="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76" isRoot="false" isLeaf="false" isAbstract="false">
+						<UML:Class xmi.id="EAID_8E938A2D_5161_4BE8_BCDC_14C9CE8042F6" visibility="public" namespace="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED" isRoot="false" isLeaf="false" isAbstract="false">
 							<UML:ModelElement.taggedValue>
 								<UML:TaggedValue tag="isSpecification" value="false"/>
 								<UML:TaggedValue tag="ea_stype" value="InteractionFragment"/>
 								<UML:TaggedValue tag="ea_ntype" value="0"/>
 								<UML:TaggedValue tag="version" value="1.0"/>
 								<UML:TaggedValue tag="isActive" value="false"/>
-								<UML:TaggedValue tag="package" value="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76"/>
+								<UML:TaggedValue tag="package" value="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED"/>
 								<UML:TaggedValue tag="date_created" value="2026-06-05 12:00:00"/>
 								<UML:TaggedValue tag="date_modified" value="2026-06-05 12:00:00"/>
 								<UML:TaggedValue tag="package_name" value="CU-25_GestionarActividades"/>
@@ -1807,19 +1807,19 @@
 								<UML:TaggedValue tag="tpos" value="0"/>
 								<UML:TaggedValue tag="ea_localid" value="44"/>
 								<UML:TaggedValue tag="ea_eleType" value="element"/>
-								<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+								<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=3;"/>
-								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={089C76F3-C913-452E-9A7C-5EB078377A13}$XID;$NAM=Partitions$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PAR;Name=eliminada;Size=100;GUID={62A9665A-46E7-48B6-B70D-2B8280F44D84};@ENDPAR;@PAR;Name=ServiceException;Size=100;GUID={C041A8BA-4465-45FE-93AD-55CF7BDC2504};@ENDPAR;$DES;$CLT={8E938A2D-5161-4BE8-BCDC-14C9CE8042F6}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={1ADC2F35-A681-49B0-97B6-8FE291A0C475}$XID;$NAM=Partitions$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PAR;Name=eliminada;Size=100;GUID={9AF06677-7C78-48F4-97DE-45DE4C60E63A};@ENDPAR;@PAR;Name=ServiceException;Size=100;GUID={64C3125A-9389-4006-B512-F6488C4A38FE};@ENDPAR;$DES;$CLT={8E938A2D-5161-4BE8-BCDC-14C9CE8042F6}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 							</UML:ModelElement.taggedValue>
 						</UML:Class>
-						<UML:Class xmi.id="EAID_31C2DD79_A8D5_43A3_95F4_FDB56FD70B13" visibility="public" namespace="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76" isRoot="false" isLeaf="false" isAbstract="false">
+						<UML:Class xmi.id="EAID_31C2DD79_A8D5_43A3_95F4_FDB56FD70B13" visibility="public" namespace="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED" isRoot="false" isLeaf="false" isAbstract="false">
 							<UML:ModelElement.taggedValue>
 								<UML:TaggedValue tag="isSpecification" value="false"/>
 								<UML:TaggedValue tag="ea_stype" value="InteractionFragment"/>
 								<UML:TaggedValue tag="ea_ntype" value="0"/>
 								<UML:TaggedValue tag="version" value="1.0"/>
 								<UML:TaggedValue tag="isActive" value="false"/>
-								<UML:TaggedValue tag="package" value="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76"/>
+								<UML:TaggedValue tag="package" value="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED"/>
 								<UML:TaggedValue tag="date_created" value="2026-06-05 12:00:00"/>
 								<UML:TaggedValue tag="date_modified" value="2026-06-05 12:00:00"/>
 								<UML:TaggedValue tag="package_name" value="CU-25_GestionarActividades"/>
@@ -1830,36 +1830,36 @@
 								<UML:TaggedValue tag="tpos" value="0"/>
 								<UML:TaggedValue tag="ea_localid" value="45"/>
 								<UML:TaggedValue tag="ea_eleType" value="element"/>
-								<UML:TaggedValue tag="diagram" value="EAID_E893DA21_E72B_46E2_A33A_75B100894918"/>
+								<UML:TaggedValue tag="diagram" value="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0"/>
 								<UML:TaggedValue tag="style" value="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=3;"/>
-								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={32DF9612-7099-45B4-8121-2DE6A53E38B7}$XID;$NAM=Partitions$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PAR;Name=newEndDate == null;Size=100;GUID={6CA15E92-8FA8-49CB-B7C2-B9373A934DDD};@ENDPAR;@PAR;Name=motivo en blanco;Size=100;GUID={DE8A60E8-7792-4DF2-9D63-94C5B79B93DD};@ENDPAR;@PAR;Name=fecha fuera de rango;Size=100;GUID={DA3C3D84-40F1-4ECD-9599-6C377AA84037};@ENDPAR;@PAR;Name=válido;Size=100;GUID={20C56ECF-FC56-4274-8268-E967623CCF51};@ENDPAR;$DES;$CLT={31C2DD79-A8D5-43A3-95F4-FDB56FD70B13}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
+								<UML:TaggedValue tag="$ea_xref_property" value="$XREFPROP=$XID={5D871541-3D16-4247-96F9-20316CD0D1DD}$XID;$NAM=Partitions$NAM;$TYP=element property$TYP;$VIS=Public$VIS;$PAR=0$PAR;$DES=@PAR;Name=newEndDate == null;Size=100;GUID={7AB56CEF-1538-4815-BD11-57F4CBB35ECD};@ENDPAR;@PAR;Name=motivo en blanco;Size=100;GUID={0DF07C38-45ED-4335-8C4F-7C73B7F19046};@ENDPAR;@PAR;Name=fecha fuera de rango;Size=100;GUID={2720F1BA-A37F-44B5-B0DA-8F8D3E53109C};@ENDPAR;@PAR;Name=válido;Size=100;GUID={F6263A17-B2BE-4BC8-8210-DE3B80D3B630};@ENDPAR;$DES;$CLT={31C2DD79-A8D5-43A3-95F4-FDB56FD70B13}$CLT;$SUP=&lt;none&gt;$SUP;$ENDXREF;"/>
 							</UML:ModelElement.taggedValue>
 						</UML:Class>
 					</UML:Namespace.ownedElement>
 				</UML:Package>
 			</UML:Namespace.ownedElement>
 		</UML:Model>
-		<UML:Diagram name="CU-25_GestionarActividades" xmi.id="EAID_E893DA21_E72B_46E2_A33A_75B100894918" diagramType="SequenceDiagram" owner="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76" toolName="Enterprise Architect 2.5">
+		<UML:Diagram name="CU-25_GestionarActividades" xmi.id="EAID_7C3E3A5D_5DC2_4419_92E2_73DB40BD5CE0" diagramType="SequenceDiagram" owner="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED" toolName="Enterprise Architect 2.5">
 			<UML:ModelElement.taggedValue>
 				<UML:TaggedValue tag="version" value="1.0"/>
 				<UML:TaggedValue tag="author" value="EA"/>
 				<UML:TaggedValue tag="created_date" value="2026-06-05 12:00:00"/>
 				<UML:TaggedValue tag="modified_date" value="2026-06-05 12:00:00"/>
-				<UML:TaggedValue tag="package" value="EAID_895F5EB1_14F5_4BE3_87C9_3F6BC2F05A76"/>
+				<UML:TaggedValue tag="package" value="EAID_C20677F9_3672_4982_ADF9_AE9F59F32AED"/>
 				<UML:TaggedValue tag="type" value="Sequence"/>
 				<UML:TaggedValue tag="ea_localid" value="46"/>
 				<UML:TaggedValue tag="EAStyle" value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=1;PPgs.cy=1;DocSize.cx=826;DocSize.cy=1169;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;ShowShape=1;AllDockable=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
 				<UML:TaggedValue tag="styleex" value="SaveTag=DB6699EE;ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=0;INT_ARGS=;INT_RET=;INT_ATT=;SeqTopMargin=50;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;"/>
 			</UML:ModelElement.taggedValue>
 			<UML:Diagram.element>
-				<UML:DiagramElement geometry="Left=40;Top=50;Right=130;Bottom=2058;" subject="EAID_D50CEF26_FC0F_4752_872F_7E66720F7616" seqno="1" style="DUID=0CC5482F;"/>
-				<UML:DiagramElement geometry="Left=240;Top=50;Right=340;Bottom=2058;" subject="EAID_F084D680_9476_4E5C_A141_25C7EFB03E3D" seqno="2" style="DUID=875564CE;"/>
-				<UML:DiagramElement geometry="Left=440;Top=50;Right=540;Bottom=2058;" subject="EAID_67577A57_821C_44A5_B416_A450D026AD26" seqno="3" style="DUID=EAF41E99;"/>
-				<UML:DiagramElement geometry="Left=640;Top=50;Right=740;Bottom=2058;" subject="EAID_023445A8_3D4F_46F6_8CDD_D107132006D5" seqno="4" style="DUID=2E344AC0;"/>
-				<UML:DiagramElement geometry="Left=15;Top=464;Right=765;Bottom=2002;" subject="EAID_5D037C21_EE95_4857_97A2_CD163AD6C2B2" seqno="5" style="DUID=B101993B;"/>
-				<UML:DiagramElement geometry="Left=27;Top=586;Right=753;Bottom=1208;" subject="EAID_36C9E1B1_69D5_4357_BAF6_814CC930F368" seqno="6" style="DUID=1A05534C;"/>
-				<UML:DiagramElement geometry="Left=39;Top=800;Right=741;Bottom=1194;" subject="EAID_8E938A2D_5161_4BE8_BCDC_14C9CE8042F6" seqno="7" style="DUID=11928811;"/>
-				<UML:DiagramElement geometry="Left=27;Top=1484;Right=753;Bottom=1988;" subject="EAID_31C2DD79_A8D5_43A3_95F4_FDB56FD70B13" seqno="8" style="DUID=20B0D548;"/>
+				<UML:DiagramElement geometry="Left=40;Top=50;Right=130;Bottom=2058;" subject="EAID_D50CEF26_FC0F_4752_872F_7E66720F7616" seqno="1" style="DUID=B9511AFC;"/>
+				<UML:DiagramElement geometry="Left=240;Top=50;Right=340;Bottom=2058;" subject="EAID_F084D680_9476_4E5C_A141_25C7EFB03E3D" seqno="2" style="DUID=125893C2;"/>
+				<UML:DiagramElement geometry="Left=440;Top=50;Right=540;Bottom=2058;" subject="EAID_67577A57_821C_44A5_B416_A450D026AD26" seqno="3" style="DUID=D9AF414F;"/>
+				<UML:DiagramElement geometry="Left=640;Top=50;Right=740;Bottom=2058;" subject="EAID_023445A8_3D4F_46F6_8CDD_D107132006D5" seqno="4" style="DUID=53667D44;"/>
+				<UML:DiagramElement geometry="Left=15;Top=464;Right=765;Bottom=2002;" subject="EAID_5D037C21_EE95_4857_97A2_CD163AD6C2B2" seqno="5" style="DUID=CC2D53AF;"/>
+				<UML:DiagramElement geometry="Left=27;Top=586;Right=753;Bottom=1208;" subject="EAID_36C9E1B1_69D5_4357_BAF6_814CC930F368" seqno="6" style="DUID=5B609AD6;"/>
+				<UML:DiagramElement geometry="Left=39;Top=800;Right=741;Bottom=1194;" subject="EAID_8E938A2D_5161_4BE8_BCDC_14C9CE8042F6" seqno="7" style="DUID=4CBED0F0;"/>
+				<UML:DiagramElement geometry="Left=27;Top=1484;Right=753;Bottom=1988;" subject="EAID_31C2DD79_A8D5_43A3_95F4_FDB56FD70B13" seqno="8" style="DUID=FA6C27C7;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;Path=;" subject="EAID_15E202D7_7B01_48E0_B139_16EC4820FDBC" style=";Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;Path=;" subject="EAID_7DA5E644_B038_454E_8532_20B259B37C5E" style=";Hidden=0;"/>
 				<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;Path=;" subject="EAID_0880287F_6DBA_4B1E_ABE0_3662E30E318D" style=";Hidden=0;"/>

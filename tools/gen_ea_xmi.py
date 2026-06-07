@@ -42,10 +42,10 @@ REMAP_LIFELINES = {
 }
 # Renombrado de guardas (texto del operando) por diagrama.
 GUARD_REMAP = {
-    # "Agregar" se extrajo a su propio CU (Anadir Actividad); aqui solo queda
-    # Actualizar (que dispara CU-26).
+    # Solo "Agregar" se extrajo a su propio CU (Anadir Actividad). Actualizar es
+    # parte de Gestionar Actividades, no un CU aparte.
     'CU-25_GestionarActividades': {
-        'accion = Agregar / Actualizar': 'accion = Actualizar (dispara CU-26; Agregar = CU Anadir Actividad)',
+        'accion = Agregar / Actualizar': 'accion = Actualizar',
     },
 }
 
