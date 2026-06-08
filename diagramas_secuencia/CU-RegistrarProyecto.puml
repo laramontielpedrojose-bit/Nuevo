@@ -1,0 +1,61 @@
+@startuml CU-RegistrarProyecto
+!include _comun.puml
+title CU Registrar Proyecto
+
+actor Coordinador
+boundary ":GUIAddProject" as UI
+participant ":AddProjectController" as C
+participant ":LinkedOrganizationDAO" as LODAO
+participant ":EducationalExperienceDAO" as EEDAO
+participant "project : Project" as DTO
+participant ":ProjectDAO" as DAO
+
+Coordinador -> UI : initialize()
+activate UI
+UI -> C : initialize()
+activate C
+C -> LODAO : findAllActive() : List<LinkedOrganization>
+C -> EEDAO : findAll() : List<EducationalExperience>
+
+Coordinador -> UI : llenar formulario y clic en "Guardar"
+UI -> C : addProject(actionEvent)
+
+alt [!inputIsValid]
+    C -> UI : showAlert("Campos invalidos", "Complete los campos requeridos.", WARNING)
+    UI --> Coordinador : muestra dialogo
+else [inputIsValid]
+    C -> C : registrationProcess()
+    C -> C : buildProject() : Project
+    create DTO
+    C -> DTO : new Project()
+    activate DTO
+    C -> DTO : setNrc(selectedEE.getNrc())
+    C -> DTO : setName(nameTextField.getText())
+    C -> DTO : setDescription(descriptionTextField.getText())
+    C -> DTO : setIdOrganization(organizationComboBox.getValue().getIdLinkedOrganization())
+    C -> DTO : setIdTechnicalSupervisor(technicalComboBox.getValue().getIdTechnicalSupervisor())
+    C -> DTO : setStartDate(startDate.getValue())
+    C -> DTO : setEndDate(endDate.getValue())
+    C -> DTO : setMaximumPlaces(Integer.parseInt(capacityTextField.getText()))
+    deactivate DTO
+    C -> DAO : new ProjectDAO()
+    activate DAO
+    C -> DAO : existsByNrc(project.getNrc()) : boolean
+    alt [nrcAlreadyUsed]
+        C -> UI : showAlert("EE con proyecto existente", "Ya existe un proyecto para esa EE.", WARNING)
+        UI --> Coordinador : muestra dialogo
+    else [nrc disponible]
+        C -> DAO : saveProject(project) : boolean
+        alt [guardado]
+            C -> UI : showAlert("Exito", "El proyecto ha sido guardado exitosamente.", INFORMATION)
+            UI --> Coordinador : muestra dialogo
+        else [no guardado]
+            C -> UI : showAlert("Error", "No se pudo guardar el proyecto.", ERROR)
+            UI --> Coordinador : muestra dialogo
+        end
+    end
+    deactivate DAO
+end
+deactivate C
+deactivate UI
+@enduml

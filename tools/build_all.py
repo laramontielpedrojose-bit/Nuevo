@@ -67,6 +67,75 @@ def addactivity_parsed():
     return G.build_spec(AA_NAME, AA_PARTICIPANTS, AA_EVENTS)
 
 
+# ---- CU 'Registrar Proyecto' (AddProjectController; sin fuente, por flujo real) ----
+AP_PARTICIPANTS = [
+    ('Co', 'Coordinador', 'actor'),
+    ('UI', ':GUIAddProject', 'boundary'),
+    ('C', ':AddProjectController', 'control'),
+    ('LODAO', ':LinkedOrganizationDAO', 'object'),
+    ('EEDAO', ':EducationalExperienceDAO', 'object'),
+    ('P', 'project : Project', 'object'),
+    ('DAO', ':ProjectDAO', 'object'),
+]
+
+AP_EVENTS = [
+    ('msg', 'Co', 'UI', 'initialize()', 'call'),
+    ('msg', 'UI', 'C', 'initialize()', 'call'),
+    ('msg', 'C', 'C', 'loadOrganizations()', 'call'),
+    ('msg', 'C', 'LODAO', 'findAllActive() : List<LinkedOrganization>', 'call'),
+    ('msg', 'C', 'C', 'loadEducationalExperiences()', 'call'),
+    ('msg', 'C', 'EEDAO', 'findAll() : List<EducationalExperience>', 'call'),
+    ('msg', 'Co', 'UI', 'llenar formulario y clic en "Guardar"', 'call'),
+    ('msg', 'UI', 'C', 'addProject(actionEvent)', 'call'),
+    ('alt', [
+        ('!inputIsValid', [
+            ('msg', 'C', 'UI', 'showAlert("Campos invalidos", "Complete los campos requeridos.", WARNING)', 'call'),
+            ('msg', 'UI', 'Co', 'muestra dialogo', 'reply'),
+        ]),
+        ('inputIsValid', [
+            ('msg', 'C', 'C', 'registrationProcess()', 'call'),
+            ('msg', 'C', 'C', 'buildProject() : Project', 'call'),
+            ('msg', 'C', 'P', 'new Project()', 'create'),
+            ('msg', 'C', 'P', 'setNrc(selectedEE.getNrc())', 'call'),
+            ('msg', 'C', 'P', 'setName(nameTextField.getText())', 'call'),
+            ('msg', 'C', 'P', 'setDescription(descriptionTextField.getText())', 'call'),
+            ('msg', 'C', 'P', 'setIdOrganization(organizationComboBox.getValue().getIdLinkedOrganization())', 'call'),
+            ('msg', 'C', 'P', 'setIdTechnicalSupervisor(technicalComboBox.getValue().getIdTechnicalSupervisor())', 'call'),
+            ('msg', 'C', 'P', 'setStartDate(startDate.getValue())', 'call'),
+            ('msg', 'C', 'P', 'setEndDate(endDate.getValue())', 'call'),
+            ('msg', 'C', 'P', 'setMaximumPlaces(Integer.parseInt(capacityTextField.getText()))', 'call'),
+            ('msg', 'C', 'DAO', 'new ProjectDAO()', 'call'),
+            ('msg', 'C', 'DAO', 'existsByNrc(project.getNrc()) : boolean', 'call'),
+            ('alt', [
+                ('nrcAlreadyUsed', [
+                    ('msg', 'C', 'UI', 'showAlert("EE con proyecto existente", "Ya existe un proyecto para esa EE.", WARNING)', 'call'),
+                    ('msg', 'UI', 'Co', 'muestra dialogo', 'reply'),
+                ]),
+                ('nrc disponible', [
+                    ('msg', 'C', 'DAO', 'saveProject(project) : boolean', 'call'),
+                    ('alt', [
+                        ('guardado', [
+                            ('msg', 'C', 'UI', 'showAlert("Exito", "El proyecto ha sido guardado exitosamente.", INFORMATION)', 'call'),
+                            ('msg', 'UI', 'Co', 'muestra dialogo', 'reply'),
+                        ]),
+                        ('no guardado', [
+                            ('msg', 'C', 'UI', 'showAlert("Error", "No se pudo guardar el proyecto.", ERROR)', 'call'),
+                            ('msg', 'UI', 'Co', 'muestra dialogo', 'reply'),
+                        ]),
+                    ]),
+                ]),
+            ]),
+        ]),
+    ]),
+]
+
+AP_NAME = 'CU-RegistrarProyecto'
+
+
+def addproject_parsed():
+    return G.build_spec(AP_NAME, AP_PARTICIPANTS, AP_EVENTS)
+
+
 def main():
     srcdir, outdir = sys.argv[1], sys.argv[2]
     os.makedirs(outdir, exist_ok=True)
@@ -81,9 +150,13 @@ def main():
     xml = G.build(addactivity_parsed())
     with open(os.path.join(outdir, AA_NAME + '.xmi'), 'w', encoding='cp1252', errors='xmlcharrefreplace') as fh:
         fh.write(xml)
+    # individual de Registrar Proyecto
+    xml = G.build(addproject_parsed())
+    with open(os.path.join(outdir, AP_NAME + '.xmi'), 'w', encoding='cp1252', errors='xmlcharrefreplace') as fh:
+        fh.write(xml)
 
-    # combinado (12 CU + Anadir Actividad)
-    sources = list(cu_files) + [addactivity_parsed()]
+    # combinado (12 CU + Anadir Actividad + Registrar Proyecto)
+    sources = list(cu_files) + [addactivity_parsed(), addproject_parsed()]
     xml = G.build_combined(sources)
     with open(os.path.join(outdir, 'SPP_Secuencias_TODOS.xmi'), 'w', encoding='cp1252', errors='xmlcharrefreplace') as fh:
         fh.write(xml)
