@@ -1,0 +1,22 @@
+@startuml
+!pragma layout smetana
+hide empty description
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #D5E8F0
+  BorderColor #2E6FA3
+  FontColor #1A3C53
+  ArrowColor #2E6FA3
+}
+title CU-03 Inactivar Coordinador
+state "Por confirmar" as PorConfirmar
+[*] --> Activo
+Activo --> PorConfirmar : inactivateCoordinator [coordinador seleccionado] / showAlertAndWait(CONFIRMATION)
+Activo --> Activo : inactivateCoordinator [sin seleccion] / showAlert("Sin seleccion", WARNING)
+PorConfirmar --> Inactivando : [response == OK] / updateUserRolStatus(user)
+PorConfirmar --> Activo : [cancela]
+Inactivando --> Inactivo : [exito] / showAlert("Coordinador desactivado", INFORMATION)
+Inactivando --> Error : [ServiceException / ValidationException] / showAlert("Error", ERROR)
+Inactivo --> [*] : / loadCoordinators()
+Error --> Activo : [reintentar]
+@enduml

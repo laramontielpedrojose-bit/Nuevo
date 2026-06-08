@@ -1,0 +1,18 @@
+@startuml
+!pragma layout smetana
+hide empty description
+skinparam shadowing false
+skinparam state {
+  BackgroundColor #D5E8F0
+  BorderColor #2E6FA3
+  FontColor #1A3C53
+  ArrowColor #2E6FA3
+}
+title CU-15 Consultar Profesor
+state "Lista mostrada" as ListaMostrada
+[*] --> Cargando : / findActiveProfessors() : List<Professor>
+Cargando --> ListaMostrada : [hay registros] / tableView.setAll(professors)
+Cargando --> Error : [ServiceException / ValidationException] / showAlert("Error", ERROR)
+ListaMostrada --> [*]
+Error --> [*]
+@enduml
