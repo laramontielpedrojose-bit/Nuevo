@@ -60,8 +60,8 @@ def build_comm(pkg_name, participants, calls):
         lay = LAYER.get(kind, 3)
         idx = layer_count.get(lay, 0)
         layer_count[lay] = idx + 1
-        o['x'] = 60 + lay * 210
-        o['y'] = 60 + idx * 130
+        o['x'] = 60 + lay * 300
+        o['y'] = 80 + idx * 170
         objs.append(o)
         by_alias[alias] = o
 
@@ -87,6 +87,23 @@ def build_comm(pkg_name, participants, calls):
         msgs.append({'id': newg(), 'sender': by_alias[s], 'receiver': by_alias[r],
                      'label': label, 'num': num, 'link': link, 'localid': loc(),
                      'seqno': len(msgs) + 1})
+
+    # separar los mensajes que comparten un mismo enlace para que NO se solapen
+    per_link = {}
+    for m in msgs:
+        per_link.setdefault(m['link']['id'], []).append(m)
+    for lid, ml in per_link.items():
+        n = len(ml)
+        so, ro = ml[0]['sender'], ml[0]['receiver']
+        horizontal = abs(so['x'] - ro['x']) >= abs(so['y'] - ro['y'])
+        for j, m in enumerate(ml):
+            d = int((j - (n - 1) / 2.0) * 28)
+            if so is ro:                      # auto-mensaje (loop)
+                m['ox'], m['oy'] = 46, d
+            elif horizontal:                  # enlace horizontal -> separar en vertical
+                m['ox'], m['oy'] = 0, d
+            else:                             # enlace vertical -> separar en horizontal
+                m['ox'], m['oy'] = d, 0
 
     bottom = max((o['y'] for o in objs), default=200) + 120
 
@@ -232,8 +249,8 @@ def build_comm(pkg_name, participants, calls):
         w('\t\t\t\t<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="%s" style="Mode=3;EOID=%s;SOID=%s;Color=-1;LWidth=0;Hidden=0;"/>'
           % (lk['id'], lk['tgt']['duid'], lk['src']['duid']))
     for m in msgs:
-        w('\t\t\t\t<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="%s" style="Mode=1;EOID=%s;SOID=%s;Color=-1;LWidth=0;Hidden=0;"/>'
-          % (m['id'], m['receiver']['duid'], m['sender']['duid']))
+        w('\t\t\t\t<UML:DiagramElement geometry="SX=%d;SY=%d;EX=%d;EY=%d;EDGE=2;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="%s" style="Mode=1;EOID=%s;SOID=%s;Color=-1;LWidth=0;Hidden=0;"/>'
+          % (m['ox'], m['oy'], m['ox'], m['oy'], m['id'], m['receiver']['duid'], m['sender']['duid']))
     w('\t\t\t</UML:Diagram.element>')
     w('\t\t</UML:Diagram>')
     G._footer(w)
