@@ -68,11 +68,22 @@ S['CU-07_RegistrarTecnicoResponsable'] = ('CU-07 Registrar Tecnico Responsable',
 ])
 
 
+# clase de contexto (clasificador cuyo comportamiento describe la maquina)
+CONTEXT = {
+    'CU-03_InactivarCoordinador': 'DeactivateCoordinatorController',
+    'CU-13_InactivarPracticante': 'DeactivateInterController',
+    'CU-06_ConsultarOrganizacionVinculada': 'ManageLinkedOrganizationController',
+    'CU-08_ConsultarTecnicoResponsable': 'ManageTechnicalResponsibleController',
+    'CU-15_ConsultarProfesor': 'DeactivateProfessorController',
+    'CU-07_RegistrarTecnicoResponsable': 'AddTechnicalResponsibleController',
+}
+
+
 def main():
     outdir = sys.argv[1] if len(sys.argv) > 1 else 'out_state'
     os.makedirs(outdir, exist_ok=True)
     for fname, (title, states, transitions) in S.items():
-        xml = GS.build_state(title, states, transitions)
+        xml = GS.build_state(title, states, transitions, context=CONTEXT.get(fname))
         with open(os.path.join(outdir, fname + '.xmi'), 'w', encoding='cp1252', errors='xmlcharrefreplace') as f:
             f.write(xml)
         print('OK ->', fname + '.xmi', '(%d estados, %d transiciones)' % (len(states), len(transitions)))

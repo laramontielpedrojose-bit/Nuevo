@@ -45,13 +45,15 @@ def _layout(states, transitions, name2id):
     return pos
 
 
-def build_state(pkg_name, states, transitions):
+def build_state(pkg_name, states, transitions, context=None):
     PKGID = gid(newg())
     MODELID = 'MX_' + gid(newg())
     AMID = PKGID + '_ActivityModel'
     TOPID = PKGID + '_Activity_Top'
     SMID = gid(newg())            # elemento StateMachine (owner de los estados)
+    CLASSID = gid(newg())         # clase de contexto (clasificador de la maquina)
     DIAGID = gid(newg())
+    ctx_name = context or (pkg_name + ' (contexto)')
     cnt = [80]
     loc = lambda: (cnt.__setitem__(0, cnt[0] + 1) or cnt[0])
 
@@ -171,18 +173,32 @@ def build_state(pkg_name, states, transitions):
     w('\t\t\t\t\t\t\t</UML:StateMachine.top>')
     w('\t\t\t\t\t\t</UML:ActivityModel>')
 
-    # --- elemento StateMachine ---
+    # --- elemento StateMachine (ea_ntype=8, dueno = clase de contexto) ---
     w('\t\t\t\t\t\t<UML:StateMachine name="State Machine %s" xmi.id="%s" visibility="public" namespace="%s">' % (esc(pkg_name), SMID, PKGID))
     w('\t\t\t\t\t\t\t<UML:ModelElement.taggedValue>')
     for t, v in [('isAbstract', 'false'), ('isSpecification', 'false'), ('ea_stype', 'StateMachine'),
-                 ('ea_ntype', '0'), ('version', '1.0'), ('isActive', 'false'), ('package', PKGID),
-                 ('date_created', DATE), ('date_modified', DATE), ('gentype', '<none>'), ('tagged', '0'),
-                 ('package_name', pkg_name), ('phase', '1.0'), ('author', AUTHOR), ('complexity', '1'),
-                 ('status', 'Proposed'), ('tpos', '0'), ('ea_localid', str(loc())), ('ea_eleType', 'element'),
+                 ('ea_ntype', '8'), ('version', '1.0'), ('isActive', 'false'), ('package', PKGID),
+                 ('owner', CLASSID), ('date_created', DATE), ('date_modified', DATE), ('gentype', '<none>'),
+                 ('tagged', '0'), ('package_name', pkg_name), ('phase', '1.0'), ('author', AUTHOR),
+                 ('complexity', '1'), ('status', 'Proposed'), ('tpos', '0'), ('ea_localid', str(loc())),
+                 ('ea_eleType', 'element'),
                  ('style', 'BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;')]:
         w('\t\t\t\t\t\t\t\t<UML:TaggedValue tag="%s" value="%s"/>' % (t, esc(v)))
     w('\t\t\t\t\t\t\t</UML:ModelElement.taggedValue>')
     w('\t\t\t\t\t\t</UML:StateMachine>')
+
+    # --- clase de contexto (clasificador cuyo comportamiento describe la maquina) ---
+    w('\t\t\t\t\t\t<UML:Class name="%s" xmi.id="%s" visibility="public" namespace="%s" isRoot="false" isLeaf="false" isAbstract="false" isActive="false">' % (esc(ctx_name), CLASSID, PKGID))
+    w('\t\t\t\t\t\t\t<UML:ModelElement.taggedValue>')
+    for t, v in [('isSpecification', 'false'), ('ea_stype', 'Class'), ('ea_ntype', '0'), ('version', '1.0'),
+                 ('package', PKGID), ('date_created', DATE), ('date_modified', DATE), ('gentype', '<none>'),
+                 ('tagged', '0'), ('package_name', pkg_name), ('phase', '1.0'), ('author', AUTHOR),
+                 ('complexity', '1'), ('status', 'Proposed'), ('tpos', '0'), ('ea_localid', str(loc())),
+                 ('ea_eleType', 'element'),
+                 ('style', 'BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;')]:
+        w('\t\t\t\t\t\t\t\t<UML:TaggedValue tag="%s" value="%s"/>' % (t, esc(v)))
+    w('\t\t\t\t\t\t\t</UML:ModelElement.taggedValue>')
+    w('\t\t\t\t\t\t</UML:Class>')
 
     w('\t\t\t\t\t</UML:Namespace.ownedElement>')
     w('\t\t\t\t</UML:Package>')
