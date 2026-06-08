@@ -1,21 +1,21 @@
 @startuml
 !pragma layout smetana
+!include _estilo.iuml
 hide empty description
-skinparam shadowing false
-skinparam state {
-  BackgroundColor #D5E8F0
-  BorderColor #2E6FA3
-  FontColor #1A3C53
-  ArrowColor #2E6FA3
-}
 title CU-06 Consultar Organizacion Vinculada
-state "Lista mostrada" as ListaMostrada
-state "Sin registros" as SinRegistros
-[*] --> Cargando : / findAll() : List<LinkedOrganization>
-Cargando --> ListaMostrada : [hay registros] / tableView.setAll(organizations)
-Cargando --> SinRegistros : [lista vacia] / showAlert("Sin registros", INFORMATION)
-Cargando --> Error : [ServiceException] / showAlert("Error de servicio", ERROR)
-ListaMostrada --> [*]
-SinRegistros --> [*]
+state "Cargando" as Carga
+Carga : entry / findAll() : List<LinkedOrganization>
+state "Lista mostrada" as Lista
+Lista : entry / tableView.getItems().setAll(organizations)
+state "Sin registros" as Vacio
+Vacio : entry / showAlert("Sin registros", INFORMATION)
+state "Error" as Error
+Error : entry / showAlert("Error de servicio", ERROR)
+[*] --> Carga
+Carga --> Lista : [hay registros]
+Carga --> Vacio : [lista vacia]
+Carga --> Error : [ServiceException]
+Lista --> [*]
+Vacio --> [*]
 Error --> [*]
 @enduml

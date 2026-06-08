@@ -1,22 +1,25 @@
 @startuml
 !pragma layout smetana
+!include _estilo.iuml
 hide empty description
-skinparam shadowing false
-skinparam state {
-  BackgroundColor #D5E8F0
-  BorderColor #2E6FA3
-  FontColor #1A3C53
-  ArrowColor #2E6FA3
-}
 title CU-13 Inactivar Practicante
-state "Por confirmar" as PorConfirmar
+state "Activo" as Activo
+Activo : entry / loadActiveInterns()
+state "Por confirmar" as Conf
+Conf : entry / showAlertAndWait(CONFIRMATION)
+state "Inactivando" as Inact
+Inact : entry / deactivateIntern(user.getId())
+state "Inactivo" as Off
+Off : entry / actualiza la tabla
+state "Error" as Error
+Error : entry / showAlert("Error", ERROR)
 [*] --> Activo
-Activo --> PorConfirmar : inactivateIntern [practicante seleccionado] / showAlertAndWait(CONFIRMATION)
-Activo --> Activo : inactivateIntern [sin seleccion] / showAlert("Sin seleccion", WARNING)
-PorConfirmar --> Inactivando : [response == OK] / deactivateIntern(user.getId())
-PorConfirmar --> Activo : [cancela]
-Inactivando --> Inactivo : [exito]
-Inactivando --> Error : [ServiceException / ValidationException] / showAlert("Error", ERROR)
-Inactivo --> [*] : / loadActiveInterns()
+Activo --> Conf : inactivateIntern [practicante seleccionado]
+Activo --> Activo : inactivateIntern [sin seleccion] / showAlert("Sin seleccion")
+Conf --> Inact : [response == OK]
+Conf --> Activo : [cancela]
+Inact --> Off : [exito]
+Inact --> Error : [ServiceException / ValidationException]
+Off --> [*]
 Error --> Activo : [reintentar]
 @enduml

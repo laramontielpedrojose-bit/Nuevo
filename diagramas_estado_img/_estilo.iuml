@@ -1,0 +1,16 @@
+skinparam backgroundColor #E7EAF1
+skinparam shadowing true
+skinparam defaultFontName "Helvetica"
+skinparam state {
+  BackgroundColor #F8ECC9
+  BorderColor #C7A22B
+  FontColor #2E2A1E
+  FontStyle bold
+  AttributeFontColor #2E8B2E
+  AttributeFontSize 13
+  AttributeFontStyle plain
+  StartColor #3C3C3C
+  EndColor #9CCB5B
+  ArrowColor #8A8A8A
+  ArrowFontColor #2E2A1E
+}

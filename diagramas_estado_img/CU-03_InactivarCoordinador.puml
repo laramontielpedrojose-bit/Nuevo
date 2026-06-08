@@ -1,22 +1,25 @@
 @startuml
 !pragma layout smetana
+!include _estilo.iuml
 hide empty description
-skinparam shadowing false
-skinparam state {
-  BackgroundColor #D5E8F0
-  BorderColor #2E6FA3
-  FontColor #1A3C53
-  ArrowColor #2E6FA3
-}
 title CU-03 Inactivar Coordinador
-state "Por confirmar" as PorConfirmar
+state "Activo" as Activo
+Activo : entry / loadCoordinators()
+state "Por confirmar" as Conf
+Conf : entry / showAlertAndWait(CONFIRMATION)
+state "Inactivando" as Inact
+Inact : entry / updateUserRolStatus(user)
+state "Inactivo" as Off
+Off : entry / showAlert("Coordinador desactivado", INFORMATION)
+state "Error" as Error
+Error : entry / showAlert("Error", ERROR)
 [*] --> Activo
-Activo --> PorConfirmar : inactivateCoordinator [coordinador seleccionado] / showAlertAndWait(CONFIRMATION)
-Activo --> Activo : inactivateCoordinator [sin seleccion] / showAlert("Sin seleccion", WARNING)
-PorConfirmar --> Inactivando : [response == OK] / updateUserRolStatus(user)
-PorConfirmar --> Activo : [cancela]
-Inactivando --> Inactivo : [exito] / showAlert("Coordinador desactivado", INFORMATION)
-Inactivando --> Error : [ServiceException / ValidationException] / showAlert("Error", ERROR)
-Inactivo --> [*] : / loadCoordinators()
+Activo --> Conf : inactivateCoordinator [coordinador seleccionado]
+Activo --> Activo : inactivateCoordinator [sin seleccion] / showAlert("Sin seleccion")
+Conf --> Inact : [response == OK]
+Conf --> Activo : [cancela]
+Inact --> Off : [exito]
+Inact --> Error : [ServiceException / ValidationException]
+Off --> [*]
 Error --> Activo : [reintentar]
 @enduml
