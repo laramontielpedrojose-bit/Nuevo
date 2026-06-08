@@ -46,13 +46,16 @@ def _layout(states, transitions, name2id):
 
 
 def build_state(pkg_name, states, transitions, context=None):
-    PKGID = gid(newg())
+    PKGID = 'EAPK_' + gid(newg())[5:]   # los paquetes de EA usan prefijo EAPK_
     MODELID = 'MX_' + gid(newg())
     AMID = PKGID + '_ActivityModel'
     TOPID = PKGID + '_Activity_Top'
     SMID = gid(newg())            # elemento StateMachine (owner de los estados)
     CLASSID = gid(newg())         # clase de contexto (clasificador de la maquina)
     DIAGID = gid(newg())
+    CDIAGID = gid(newg())         # diagrama de clases (muestra Clase + StateMachine)
+    cls_duid = uuid.uuid4().hex[:8].upper()
+    sm_duid = uuid.uuid4().hex[:8].upper()
     ctx_name = context or (pkg_name + ' (contexto)')
     cnt = [80]
     loc = lambda: (cnt.__setitem__(0, cnt[0] + 1) or cnt[0])
@@ -242,6 +245,30 @@ def build_state(pkg_name, states, transitions, context=None):
         edge += 1
         w('\t\t\t\t<UML:DiagramElement geometry="SX=0;SY=0;EX=0;EY=0;EDGE=%d;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="%s" style="Mode=3;EOID=%s;SOID=%s;Color=-1;LWidth=0;Hidden=0;"/>'
           % (edge, tr['id'], tr['tgt']['duid'], tr['src']['duid']))
+    w('\t\t\t</UML:Diagram.element>')
+    w('\t\t</UML:Diagram>')
+
+    # --- diagrama de clases (Clase de contexto con su StateMachine), como en la
+    #     plantilla: refuerza que la maquina pertenece a un clasificador ---
+    w('\t\t<UML:Diagram name="%s" xmi.id="%s" diagramType="ClassDiagram" owner="%s" toolName="Enterprise Architect 2.5">' % (esc(pkg_name + ' - Contexto'), CDIAGID, PKGID))
+    w('\t\t\t<UML:ModelElement.taggedValue>')
+    CEASTYLE = ('ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;'
+                'HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=1;PPgs.cy=1;'
+                'DocSize.cx=827;DocSize.cy=1169;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;'
+                'VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;'
+                'ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;'
+                'HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;'
+                'ShowShape=1;AllDockable=0;AdvancedElementProps=1;AdvancedFeatureProps=1;'
+                'AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;ShowNotes=0;SuppressBrackets=0;'
+                'SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;')
+    for t, v in [('version', '1.0'), ('author', AUTHOR), ('created_date', DATE), ('modified_date', DATE),
+                 ('package', PKGID), ('type', 'Logical'), ('ea_localid', str(loc())),
+                 ('EAStyle', CEASTYLE), ('styleex', 'SaveTag=F6B74707;TConnectorNotation=UML 2.1;SPT=1;Theme=:119;')]:
+        w('\t\t\t\t<UML:TaggedValue tag="%s" value="%s"/>' % (t, esc(v)))
+    w('\t\t\t</UML:ModelElement.taggedValue>')
+    w('\t\t\t<UML:Diagram.element>')
+    w('\t\t\t\t<UML:DiagramElement geometry="Left=120;Top=113;Right=300;Bottom=233;" subject="%s" seqno="1" style="DUID=%s;"/>' % (CLASSID, cls_duid))
+    w('\t\t\t\t<UML:DiagramElement geometry="Left=400;Top=113;Right=560;Bottom=193;" subject="%s" seqno="2" style="DUID=%s;"/>' % (SMID, sm_duid))
     w('\t\t\t</UML:Diagram.element>')
     w('\t\t</UML:Diagram>')
     G._footer(w)
